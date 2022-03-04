@@ -1,0 +1,30 @@
+{
+  "name": "factle-app",
+  "version": "1.0.0",
+  "description": "Factle app hosted on factle.app",
+  "scripts": {
+    "build": "npm run build--debug -- --no-source-maps",
+    "build--debug": "cd frontend && parcel build public/*.html public/*.jpg public/*.png --dist-dir dist",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kylesadler/factle-app.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kylesadler/factle-app/issues"
+  },
+  "homepage": "https://github.com/kylesadler/factle-app#readme",
+  "dependencies": {
+    "express": "^4.17.2",
+    "parcel": "^2.3.1",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
+  },
+  "devDependencies": {
+    "@parcel/packager-raw-url": "^2.3.1",
+    "@parcel/transformer-webmanifest": "^2.3.1"
+  }
+}
