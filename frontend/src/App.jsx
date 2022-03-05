@@ -258,6 +258,8 @@ const StatisticsModal = observer(({ open, onClose, game }) => {
                 padding: "15px 0px",
                 margin: "auto",
                 backgroundColor: "black",
+                background:
+                  "linear-gradient(to right, #eea849, #f46b45)" /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */,
               }}
             >
               <div
@@ -309,7 +311,7 @@ const StatisticsModal = observer(({ open, onClose, game }) => {
                     `${title}\n${prompt}\n` + emojisLines.join("\n")
                   );
                   ref.current.innerHTML = "Copied!";
-                  ref.current.style.backgroundColor = COLORS.YELLOW;
+                  ref.current.style.backgroundColor = "#eea849";
 
                   event.stopPropagation();
                   setTimeout(() => {
