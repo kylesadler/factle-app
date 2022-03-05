@@ -3,8 +3,9 @@ import Typography from "@mui/material/Typography";
 import { observer } from "mobx-react-lite";
 import Tile from "./Tile";
 import TileRow from "./TileRow";
+import { GAME_STATUS, COLORS } from "./Game";
 
-const RankingBlock = ({}) => {
+const RankingBlock = () => {
   return (
     <div
       style={{
@@ -29,8 +30,9 @@ const RankingBlock = ({}) => {
 };
 
 export default observer(({ game }) => {
-  console.log("board", game.board);
-  console.log("row, col", game.row, game.col);
+  //   console.log("board", game.board);
+  //   console.log("row, col", game.row, game.col);
+  //   console.log("solution", game.solution);
   return (
     <div>
       <RankingBlock />
@@ -49,6 +51,17 @@ export default observer(({ game }) => {
           </TileRow>
         );
       })}
+      {game.status == GAME_STATUS.LOST ? (
+        <TileRow>
+          {game.solution.map((text) => {
+            return (
+              <Tile text={text} style={{ backgroundColor: COLORS.GREEN }} />
+            );
+          })}
+        </TileRow>
+      ) : (
+        ""
+      )}
     </div>
   );
 });

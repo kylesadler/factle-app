@@ -10,9 +10,6 @@ const KeyboardTile = ({
   styles = {},
   textStyle = {},
 }) => {
-  const disabledButtonStyle = disabled
-    ? { color: "rgb(87, 87, 87)", backgroundColor: "rgb(58, 58, 59)" }
-    : {};
   return (
     <div style={{ padding: 3, width: "20%", maxWidth: "100px" }}>
       <Tile
@@ -20,14 +17,17 @@ const KeyboardTile = ({
         onClick={onClick}
         style={{
           borderRadius: 5,
-          backgroundColor: "rgba(78, 78, 78, 1)",
+          backgroundColor: "rgba(110, 110, 110, 1)",
           width: "100%",
           height: "100%",
 
           ...styles,
-          ...disabledButtonStyle,
+          ...(disabled ? { backgroundColor: "rgb(58, 58, 59)" } : {}),
         }}
-        textStyle={textStyle}
+        textStyle={{
+          ...textStyle,
+          ...(disabled ? { color: "rgb(110, 110, 110)" } : {}),
+        }}
       />
     </div>
   );

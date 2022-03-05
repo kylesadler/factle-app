@@ -1,5 +1,6 @@
 import { green, yellow } from "@mui/material/colors";
 import { makeAutoObservable } from "mobx";
+import { getStatistics, setStatistics } from "./util";
 
 const GAME_STATUS = {
   IN_PROGRESS: "in progress",
@@ -17,8 +18,9 @@ const gameStatistics = {
 };
 
 const COLORS = {
-  GREEN: green[700],
-  YELLOW: yellow[700],
+  //   GREEN: green[700],
+  GREEN: "#6aaa64", // official color
+  YELLOW: "#c9b458",
 };
 
 /* options is list of 23 strings
@@ -31,7 +33,9 @@ const COLORS = {
 // ids 1-5 are the answers
 
 class Game {
-  constructor() {
+  constructor({ solution, onComplete }) {
+    this.solution = solution;
+
     // 5 x 5 array of guesses (options) on gameboard. only current row can be modified
     this.board = [...Array(5).keys()].map(() => {
       return [...Array(5).keys()].map(() => {
@@ -52,11 +56,23 @@ class Game {
     this.col = 0;
     this.status = GAME_STATUS.IN_PROGRESS;
 
+    this.onComplete = onComplete; // ({ win: bool }) => {}
+
+    const today = new Date(Date.now());
+    let { lastGame, lastGameDate, wonLastGame } = getStatistics();
+
+    if (lastGameDate == today.toDateString()) {
+      this.board = lastGame;
+      //   console.log("setting board", typeof this.board);
+      this.status = wonLastGame ? GAME_STATUS.WON : GAME_STATUS.LOST;
+    }
+
     makeAutoObservable(this);
   }
 
   onSelect = (option) => {
-    console.log("selected", option);
+    // console.log("selected", option);
+    if (this.status != GAME_STATUS.IN_PROGRESS) return;
     const alreadySelected = this.board[this.row].some(({ id }) => {
       return id == option.id;
     });
@@ -67,7 +83,7 @@ class Game {
   };
 
   onBackspace = () => {
-    console.log("backspace");
+    // console.log("backspace");
     if (this.col > 0) {
       this.col--;
       this.board[this.row][this.col] = {};
@@ -75,13 +91,12 @@ class Game {
   };
 
   onEnter = () => {
-    console.log("enter");
+    // console.log("enter");
 
-    if (this.col != 5) return;
+    if (this.status != GAME_STATUS.IN_PROGRESS || this.col != 5) return;
 
     let numCorrect = 0;
     const guess = this.board[this.row];
-    console.log(guess);
 
     // set this.keyboardColors and this.board colors
     for (let i = 0; i < 5; i++) {
@@ -90,28 +105,47 @@ class Game {
       if (id == i) {
         // in correct spot
         this.keyboardColors[id] = COLORS.GREEN;
-        this.board[this.row][i].color = COLORS.green;
+        this.board[this.row][i].color = COLORS.GREEN;
         numCorrect++;
       } else if (id < 5) {
         // guess was top 5, but not correct spot
         if (this.keyboardColors[id] != COLORS.GREEN) {
           this.keyboardColors[id] = COLORS.YELLOW;
         }
-        this.board[this.row][i].color = COLORS.yellow;
+        this.board[this.row][i].color = COLORS.YELLOW;
       } else {
         // not correct
         this.disabledKeys[id] = true;
       }
     }
 
-    if (numCorrect == 5) {
-      console.log("win!");
-      this.status = GAME_STATUS.WON;
-    } else if (this.row == 4) {
-      // last row
-      console.log("game is over");
-      this.status = GAME_STATUS.LOST;
+    if (this.row == 4 || numCorrect == 5) {
+      // at end of game
+      let stats = getStatistics();
+
+      if (numCorrect == 5) {
+        // console.log("win!");
+        this.status = GAME_STATUS.WON;
+        stats.wonGames = stats.wonGames ? stats.wonGames + 1 : 1;
+        stats.wonLastGame = true;
+
+        this.onComplete({ win: true });
+      } else if (this.row == 4) {
+        // last row
+        // console.log("game is over");
+        this.onComplete({ win: false });
+        this.status = GAME_STATUS.LOST;
+        stats.wonLastGame = false;
+      }
+
+      stats.row = this.row;
+      stats.totalGames = stats.totalGames ? stats.totalGames + 1 : 1;
+      const today = new Date(Date.now());
+      stats.lastGameDate = today.toDateString();
+      stats.lastGame = this.board;
+      setStatistics(stats);
     }
+
     this.row++;
     this.col = 0;
   };
@@ -119,3 +153,4 @@ class Game {
 
 exports.Game = Game;
 exports.GAME_STATUS = GAME_STATUS;
+exports.COLORS = COLORS;

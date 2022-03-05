@@ -32,7 +32,7 @@ export default observer(({ options, prompt, game }) => {
       }}
     >
       <PromptBlock prompt={prompt} />
-      <GameBoard options={options} game={game} />
+      <GameBoard game={game} />
       <VerticlePadding />
       <Keyboard
         options={options}
