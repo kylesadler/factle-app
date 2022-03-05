@@ -59,10 +59,11 @@ class Game {
     this.onComplete = onComplete; // ({ win: bool }) => {}
 
     const today = new Date(Date.now());
-    let { lastGame, lastGameDate, wonLastGame } = getStatistics();
+    let { lastGame, lastGameDate, wonLastGame, row } = getStatistics();
 
     if (lastGameDate == today.toDateString()) {
-      this.board = lastGame;
+      if (lastGame) this.board = lastGame;
+      if (row) this.row = row;
       //   console.log("setting board", typeof this.board);
       this.status = wonLastGame ? GAME_STATUS.WON : GAME_STATUS.LOST;
     }
