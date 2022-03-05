@@ -139,7 +139,7 @@ class Game {
         stats.wonLastGame = false;
       }
 
-      stats.row = this.row;
+      stats.row = this.row + 1; //  to correct for adding 1 to row
       stats.totalGames = stats.totalGames ? stats.totalGames + 1 : 1;
       const today = new Date(Date.now());
       stats.lastGameDate = today.toDateString();

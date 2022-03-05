@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Modal from "./Modal";
 import Header from "./Header";
 import FactleGame from "./FactleGame";
@@ -203,12 +203,17 @@ const getShareString = (game) => {
   };
 };
 
+const copyToClipboard = (string) => {
+  navigator.clipboard.writeText(string);
+};
+
 const formatPercent = (num) => {
   return `${Math.round(num * 100)}%`;
 };
 
 const twitterColor = "rgb(48, 155, 240)";
 const StatisticsModal = observer(({ open, onClose, game }) => {
+  const ref = useRef(null);
   const timeDifference = getTimeToMidnight();
   const { title, emojisLines, prompt } = getShareString(game);
 
@@ -235,10 +240,9 @@ const StatisticsModal = observer(({ open, onClose, game }) => {
         {!isNaN(wonGames) && !isNaN(totalGames) ? (
           <div style={{ width: "100%", padding: "9px 0px" }}>
             <Typography variant="body1" gutterBottom>
-              {`You've won ${wonGames} out of ${totalGames}` +
-                (ratio > 0.5
-                  ? `. That's ${formatPercent(ratio)} !`
-                  : ` (${formatPercent(ratio)})`)}
+              {`You've won ${wonGames} out of ${totalGames}. That's ${formatPercent(
+                ratio
+              )}.`}
             </Typography>
           </div>
         ) : (
@@ -246,30 +250,76 @@ const StatisticsModal = observer(({ open, onClose, game }) => {
         )}
         {game.status != GAME_STATUS.IN_PROGRESS ? (
           <div style={{ width: "100%", padding: "9px 0px" }}>
-            <div style={{ margin: "auto", textAlign: "center" }}>
-              <Typography
-                style={{ lineHeight: 1 }}
-                variant="body1"
-                gutterBottom
+            <Paper
+              style={{
+                width: "50%",
+                minWidth: 200,
+                maxWidth: 300,
+                padding: "15px 0px",
+                margin: "auto",
+                backgroundColor: "black",
+              }}
+            >
+              <div
+                style={{
+                  margin: "auto",
+                  width: "48%",
+                  minWidth: 180,
+                  maxWidth: 280,
+                  textAlign: "center",
+                }}
               >
-                {title}
-              </Typography>
-              <Typography
-                style={{ lineHeight: 1 }}
-                variant="body1"
-                gutterBottom
-              >
-                {prompt}
-              </Typography>
-            </div>
-            <div style={{ margin: "auto", textAlign: "center" }}>
-              {emojisLines.map((line) => {
-                return (
-                  <Typography style={{ lineHeight: 1 }} variant="body1">
-                    {line}
+                <div style={{ margin: "auto", textAlign: "center" }}>
+                  <Typography
+                    style={{ lineHeight: 1 }}
+                    variant="body1"
+                    gutterBottom
+                  >
+                    {title}
                   </Typography>
-                );
-              })}
+                  <Typography
+                    style={{ lineHeight: 1 }}
+                    variant="body1"
+                    gutterBottom
+                  >
+                    {prompt}
+                  </Typography>
+                </div>
+                <div style={{ margin: "auto", textAlign: "center" }}>
+                  {emojisLines.map((line) => {
+                    return (
+                      <Typography style={{ lineHeight: 1 }} variant="body1">
+                        {line}
+                      </Typography>
+                    );
+                  })}
+                </div>
+              </div>
+            </Paper>
+
+            <div
+              style={{ margin: "auto", textAlign: "center", paddingTop: 10 }}
+            >
+              <Button
+                ref={ref}
+                variant="contained"
+                style={{ backgroundColor: COLORS.GREEN }}
+                onClick={(event) => {
+                  copyToClipboard(
+                    `${title}\n${prompt}\n` + emojisLines.join("\n")
+                  );
+                  ref.current.innerHTML = "Copied!";
+                  ref.current.style.backgroundColor = COLORS.YELLOW;
+
+                  event.stopPropagation();
+                  setTimeout(() => {
+                    ref.current.innerHTML = "Share";
+                    ref.current.style.backgroundColor = COLORS.GREEN;
+                  }, 1000);
+                }}
+              >
+                Share
+              </Button>
             </div>
           </div>
         ) : (
