@@ -204,7 +204,7 @@ const getShareString = (game) => {
 };
 
 const copyToClipboard = (string) => {
-  navigator.clipboard.writeText(string);
+  if (navigator.clipboard) navigator.clipboard.writeText(string);
 };
 
 const formatPercent = (num) => {
@@ -307,13 +307,13 @@ const StatisticsModal = observer(({ open, onClose, game }) => {
                 variant="contained"
                 style={{ backgroundColor: COLORS.GREEN }}
                 onClick={(event) => {
+                  event.stopPropagation();
                   copyToClipboard(
                     `${title}\n${prompt}\n` + emojisLines.join("\n")
                   );
                   ref.current.innerHTML = "Copied!";
                   ref.current.style.backgroundColor = "#eea849";
 
-                  event.stopPropagation();
                   setTimeout(() => {
                     ref.current.innerHTML = "Share";
                     ref.current.style.backgroundColor = COLORS.GREEN;
