@@ -1,9 +1,10 @@
 import React from "react";
 import Typography from "@mui/material/Typography";
 import { observer } from "mobx-react-lite";
-import Tile from "./Tile";
-import TileRow from "./TileRow";
-import { GAME_STATUS, COLORS } from "./Game";
+import BoardTileRow from "../GameBoard/BoardTileRow";
+import { GAME_STATUS } from "../../../Factle";
+import Colors from "../../../Colors";
+import BoardTile from "./BoardTile";
 
 const RankingBlock = () => {
   return (
@@ -39,26 +40,19 @@ export default observer(({ game }) => {
       {game.board.map((row) => {
         // row is len 5 array of options
         return (
-          <TileRow>
+          <BoardTileRow>
             {row.map(({ text, color }) => {
-              return (
-                <Tile
-                  text={text}
-                  style={{ backgroundColor: color ? color : "black" }}
-                />
-              );
+              return <BoardTile text={text} color={color} />;
             })}
-          </TileRow>
+          </BoardTileRow>
         );
       })}
       {game.status == GAME_STATUS.LOST ? (
-        <TileRow>
+        <BoardTileRow>
           {game.solution.map((text) => {
-            return (
-              <Tile text={text} style={{ backgroundColor: COLORS.GREEN }} />
-            );
+            return <BoardTile text={text} color={Colors.GREEN} />;
           })}
-        </TileRow>
+        </BoardTileRow>
       ) : (
         ""
       )}

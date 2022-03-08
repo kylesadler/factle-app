@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import Typography from "@mui/material/Typography";
 import { observer } from "mobx-react-lite";
-import GameBoard from "./GameBoard";
-import Keyboard from "./Keyboard";
+import GameBoard from "./GameBoard/GameBoard";
+import Keyboard from "./Keyboard/Keyboard";
 
 const PromptBlock = ({ prompt }) => {
   return (
@@ -21,6 +21,7 @@ const VerticlePadding = () => {
 };
 
 export default observer(({ options, prompt, game }) => {
+  // component of entire factle game board and keyboard
   return (
     <div
       style={{

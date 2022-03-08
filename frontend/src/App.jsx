@@ -1,50 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
-import Modal from "./Modal";
-import Header from "./Header";
-import FactleGame from "./FactleGame";
-import { Game, GAME_STATUS, COLORS } from "./Game";
-import TileRow from "./TileRow";
-import Tile from "./Tile";
-import { getStatistics } from "./util";
-
-import Paper from "@mui/material/Paper";
-import Typography from "@mui/material/Typography";
+import { Factle } from "./Factle";
 import {
   ThemeProvider,
   createTheme,
   responsiveFontSizes,
 } from "@mui/material/styles";
 import { observer } from "mobx-react-lite";
-import { Button, Divider } from "@mui/material";
 
-const problem = {
-  prompt: "Top 5 Most Followed People on Instagram",
-  options: [
-    "Nicki Minaj",
-    "Beyonce",
-    "Zendaya",
-    "Kyle Sadler",
-    "Jerry Seinfeld",
-    ...[...Array(18).keys()].map((_, id) => {
-      return `Wrong Option ${id}`;
-    }),
-  ], // top 5 are in order
-};
-
-// console.log("problem", problem);
-
-const GAME_STATUS = {
-  IN_PROGRESS: "in progress",
-  WON: "won",
-  LOST: "lost",
-};
-
-const gameStatistics = {
-  gamesPlayed: 0,
-  gamesWon: 0,
-  winningStreak: 0,
-  maxWinningStreak: 0,
-};
+import MainPage from "./MainPage/MainPage";
 
 let theme = createTheme({
   typography: {
@@ -71,307 +34,32 @@ let theme = createTheme({
 
 theme = responsiveFontSizes(theme);
 
-const PipedropsTag = () => {};
-
-const ModalPaper = ({ children, styles }) => {
-  return (
-    <Paper
-      style={{
-        width: "70%",
-        maxWidth: 500,
-        margin: "auto",
-        padding: 20,
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "flex-start",
-        backgroundColor: "gray",
-        ...styles,
-      }}
-    >
-      {children}
-    </Paper>
-  );
+// this is the data that can change
+const config = {
+  problem: {
+    prompt: "Top 5 Most Followed People on Instagram",
+    options: [
+      "Nicki Minaj",
+      "Beyonce",
+      "Zendaya",
+      "Kyle Sadler",
+      "Jerry Seinfeld",
+      ...[...Array(18).keys()].map((_, id) => {
+        return `Wrong Option ${id}`;
+      }),
+    ], // top 5 are in order
+  },
 };
 
-const HowToPlayModal = ({ open, onClose }) => {
-  return (
-    <Modal open={open} onClose={onClose}>
-      <ModalPaper>
-        <div style={{ width: "100%" }}>
-          <div style={{ margin: "auto", padding: 15, textAlign: "center" }}>
-            <Typography style={{ fontWeight: 600 }} variant="h4" gutterBottom>
-              How to Play
-            </Typography>
-          </div>
-        </div>
-        <div style={{ width: "100%", padding: "9px 0px" }}>
-          <Typography variant="body1" gutterBottom>
-            Guess the FACTLE in five tries.
-          </Typography>
+const { problem } = config;
 
-          <Typography variant="body1" gutterBottom>
-            For each guess, rank what you think are the top 5 answers. Hit the
-            enter button to submit.
-          </Typography>
+/**
+  options is list of 23 strings in order
+  prompt is a string
 
-          <Typography variant="body1" gutterBottom>
-            After each guess, the color of the tiles will change to show how
-            close your guess was to the real ranking.
-          </Typography>
-        </div>
-        <Divider />
-        <div style={{ width: "100%", padding: "9px 0px" }}>
-          <Typography variant="h5" style={{ fontWeight: 400 }}>
-            Examples
-          </Typography>
-          <div style={{ padding: "5px 0px" }}>
-            <TileRow>
-              <Tile text={1} style={{ backgroundColor: COLORS.GREEN }} />
-              {[19, 7, 6, 20].map((n) => {
-                return <Tile text={n} />;
-              })}
-            </TileRow>
-          </div>
-          <Typography variant="body1" gutterBottom>
-            The number 1 is in the ranking and in the right place.
-          </Typography>
-          <div style={{ padding: "5px 0px" }}>
-            <TileRow>
-              <Tile text={21} />
-              <Tile text={4} style={{ backgroundColor: COLORS.YELLOW }} />
-              {[12, 8, 26].map((n) => {
-                return <Tile text={n} />;
-              })}
-            </TileRow>
-          </div>
-          <Typography variant="body1" gutterBottom>
-            The number 4 is in the ranking but in the wrong place.
-          </Typography>
-        </div>
-        <Divider />
-        <div style={{ width: "100%", padding: "9px 0px" }}>
-          <Typography variant="body1" gutterBottom>
-            A new Factle will be available everyday!
-          </Typography>
-          <Typography variant="body1" gutterBottom>
-            Based on Jonathon Wardle's game, Wordle.
-          </Typography>
-        </div>
-        <div style={{ width: "100%", padding: "9px 0px" }}>
-          <Button
-            variant="contained"
-            style={{ backgroundColor: COLORS.GREEN }}
-            onClick={onClose}
-          >
-            Start Playing
-          </Button>
-        </div>
-      </ModalPaper>
-    </Modal>
-  );
-};
-
-const getTimeToMidnight = () => {
-  const today = new Date(Date.now());
-  return { hours: 23 - today.getHours(), mintues: 59 - today.getMinutes() };
-};
-
-const EMOJIS = {
-  YELLOW: "🐱",
-  GREEN: "🐸",
-  BLACK: "⬛",
-};
-const getShareString = (game) => {
-  return {
-    title: `factle.app ${game.row}/5`,
-    prompt: problem.prompt,
-    emojisLines: game.board.map((row, i) => {
-      return i < game.row
-        ? row
-            .map(({ color }) => {
-              if (color == COLORS.YELLOW) {
-                return EMOJIS.YELLOW;
-              } else if (color == COLORS.GREEN) {
-                return EMOJIS.GREEN;
-              } else {
-                return EMOJIS.BLACK;
-              }
-            })
-            .join("")
-        : "";
-    }),
-  };
-};
-
-const copyToClipboard = (string) => {
-  if (navigator.clipboard) navigator.clipboard.writeText(string);
-};
-
-const formatPercent = (num) => {
-  return `${Math.round(num * 100)}%`;
-};
-
-const twitterColor = "rgb(48, 155, 240)";
-const StatisticsModal = observer(({ open, onClose, game }) => {
-  const ref = useRef(null);
-  const timeDifference = getTimeToMidnight();
-  const { title, emojisLines, prompt } = getShareString(game);
-
-  const { wonGames, totalGames } = getStatistics();
-  const ratio = wonGames / totalGames;
-
-  return (
-    <Modal open={open} onClose={onClose}>
-      <ModalPaper>
-        <div style={{ width: "100%" }}>
-          <div
-            style={{
-              margin: "auto",
-              padding: 15,
-              paddingBottom: 0,
-              textAlign: "center",
-            }}
-          >
-            <Typography style={{ fontWeight: 600 }} variant="h4" gutterBottom>
-              Statistics
-            </Typography>
-          </div>
-        </div>
-        {!isNaN(wonGames) && !isNaN(totalGames) ? (
-          <div style={{ width: "100%", padding: "9px 0px" }}>
-            <Typography variant="body1" gutterBottom>
-              {`You've won ${wonGames} out of ${totalGames}. That's ${formatPercent(
-                ratio
-              )}.`}
-            </Typography>
-          </div>
-        ) : (
-          ""
-        )}
-        {game.status != GAME_STATUS.IN_PROGRESS ? (
-          <div style={{ width: "100%", padding: "9px 0px" }}>
-            <Paper
-              style={{
-                width: "50%",
-                minWidth: 200,
-                maxWidth: 300,
-                padding: "15px 0px",
-                margin: "auto",
-                backgroundColor: "black",
-                background:
-                  "linear-gradient(to right, #eea849, #f46b45)" /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */,
-              }}
-            >
-              <div
-                style={{
-                  margin: "auto",
-                  width: "48%",
-                  minWidth: 180,
-                  maxWidth: 280,
-                  textAlign: "center",
-                }}
-              >
-                <div style={{ margin: "auto", textAlign: "center" }}>
-                  <Typography
-                    style={{ lineHeight: 1 }}
-                    variant="body1"
-                    gutterBottom
-                  >
-                    {title}
-                  </Typography>
-                  <Typography
-                    style={{ lineHeight: 1 }}
-                    variant="body1"
-                    gutterBottom
-                  >
-                    {prompt}
-                  </Typography>
-                </div>
-                <div style={{ margin: "auto", textAlign: "center" }}>
-                  {emojisLines.map((line) => {
-                    return (
-                      <Typography style={{ lineHeight: 1 }} variant="body1">
-                        {line}
-                      </Typography>
-                    );
-                  })}
-                </div>
-              </div>
-            </Paper>
-
-            <div
-              style={{ margin: "auto", textAlign: "center", paddingTop: 10 }}
-            >
-              <Button
-                ref={ref}
-                variant="contained"
-                style={{ backgroundColor: COLORS.GREEN }}
-                onClick={(event) => {
-                  event.stopPropagation();
-                  copyToClipboard(
-                    `${title}\n${prompt}\n` + emojisLines.join("\n")
-                  );
-                  ref.current.innerHTML = "Copied!";
-                  ref.current.style.backgroundColor = "#eea849";
-
-                  setTimeout(() => {
-                    ref.current.innerHTML = "Share";
-                    ref.current.style.backgroundColor = COLORS.GREEN;
-                  }, 1000);
-                }}
-              >
-                Share
-              </Button>
-            </div>
-          </div>
-        ) : (
-          ""
-        )}
-        <div style={{ width: "100%", padding: "9px 0px" }}>
-          <Typography variant="body1" gutterBottom>
-            Next Factle in {timeDifference.hours} hours and{" "}
-            {timeDifference.mintues} minutes!
-          </Typography>
-        </div>
-        <div style={{ width: "100%", padding: "9px 0px" }}>
-          {/* updates, follow us */}
-          <Typography variant="body1" gutterBottom>
-            Follow me on
-          </Typography>
-          <div style={{ display: "flex", padding: "5px, 0px" }}>
-            <Button
-              variant="contained"
-              style={{ backgroundColor: twitterColor }}
-              onClick={onClose}
-            >
-              Twitter
-            </Button>
-            <div style={{ width: 10 }}></div>
-            <Button
-              variant="contained"
-              style={{
-                background:
-                  "-webkit-linear-gradient(left, rgb(238, 179, 90) 0%, rgb(224, 69, 106) 50%, rgb(148, 45, 178) 100%)",
-              }}
-              onClick={onClose}
-            >
-              Instagram
-            </Button>
-          </div>
-        </div>
-      </ModalPaper>
-    </Modal>
-  );
-});
-
-/* options is list of 23 strings
-     prompt is a string
-  */
-
-// assert inputs are correct
-
-// shuffledOptions is array of { text, id }
-// ids 1-5 are the answers
+  shuffledOptions is array of { text, id }
+  ids 1-5 are the correct answers in order
+ */
 
 const shuffledOptions = problem.options
   .map((text, index) => {
@@ -379,58 +67,14 @@ const shuffledOptions = problem.options
   })
   .sort(() => Math.random() - 0.5);
 
-const AppWithoutGame = observer(({ game }) => {
-  const [helpOpen, setHelpOpen] = useState(false);
-  const [statsOpen, setStatsOpen] = useState(false);
-
-  game.onComplete = ({ win }) => {
-    setTimeout(() => {
-      setStatsOpen(true);
-    }, 1100);
-  };
-
-  return (
-    <div>
-      <ThemeProvider theme={theme}>
-        <Header
-          onHelpClick={() => {
-            setHelpOpen(true);
-            // console.log("opening help");
-          }}
-          onStatsClick={() => {
-            setStatsOpen(true);
-            // console.log("opening stats");
-          }}
-        />
-        <FactleGame
-          options={shuffledOptions}
-          prompt={problem.prompt}
-          game={game}
-        />
-        <HowToPlayModal
-          open={helpOpen}
-          onClose={() => {
-            // console.log("closing help");
-            setHelpOpen(false);
-          }}
-        />
-        <StatisticsModal
-          game={game}
-          open={statsOpen}
-          onClose={() => {
-            // console.log("closing stats");
-            setStatsOpen(false);
-          }}
-        />
-      </ThemeProvider>
-    </div>
-  );
-});
-
 export default () => {
-  const game = new Game({
+  const game = new Factle({
     solution: problem.options.slice(0, 5),
   });
 
-  return <AppWithoutGame game={game} />;
+  return (
+    <ThemeProvider theme={theme}>
+      <MainPage game={game} prompt={problem.prompt} options={shuffledOptions} />
+    </ThemeProvider>
+  );
 };

@@ -1,37 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { observer } from "mobx-react-lite";
-import Tile from "./Tile";
-import TileRow from "./TileRow";
-
-const KeyboardTile = ({
-  text,
-  onClick,
-  disabled = false,
-  styles = {},
-  textStyle = {},
-}) => {
-  return (
-    <div style={{ padding: 3, width: "20%", maxWidth: "100px" }}>
-      <Tile
-        text={text}
-        onClick={onClick}
-        style={{
-          borderRadius: 5,
-          backgroundColor: "rgba(110, 110, 110, 1)",
-          width: "100%",
-          height: "100%",
-
-          ...styles,
-          ...(disabled ? { backgroundColor: "rgb(58, 58, 59)" } : {}),
-        }}
-        textStyle={{
-          ...textStyle,
-          ...(disabled ? { color: "rgb(110, 110, 110)" } : {}),
-        }}
-      />
-    </div>
-  );
-};
+import Tile from "../Tile";
+import TileRow from "../TileRow";
+import Colors from "../../../Colors";
+import KeyboardTile from "./KeyboardTile";
 
 export default observer(({ options, game, onSelect, onBackspace, onEnter }) => {
   // "Keyboard" of option buttons

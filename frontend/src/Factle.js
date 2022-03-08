@@ -1,6 +1,6 @@
-import { green, yellow } from "@mui/material/colors";
 import { makeAutoObservable } from "mobx";
-import { getStatistics, setStatistics } from "./util";
+import { getStatistics, setStatistics } from "./statistics";
+import Colors from "./Colors";
 
 const GAME_STATUS = {
   IN_PROGRESS: "in progress",
@@ -17,12 +17,6 @@ const gameStatistics = {
   maxWinningStreak: 0,
 };
 
-const COLORS = {
-  //   GREEN: green[700],
-  GREEN: "#6aaa64", // official color
-  YELLOW: "#c9b458",
-};
-
 /* options is list of 23 strings
      prompt is a string
   */
@@ -32,8 +26,10 @@ const COLORS = {
 // shuffledOptions is array of { text, id }
 // ids 1-5 are the answers
 
-class Game {
+class Factle {
   constructor({ solution, onComplete }) {
+    // this.options = options; // array of 23 strings in order
+
     this.solution = solution;
 
     // 5 x 5 array of guesses (options) on gameboard. only current row can be modified
@@ -50,7 +46,7 @@ class Game {
       });
     });
 
-    this.keyboardColors = {}; // object [option id] => COLORS
+    this.keyboardColors = {}; // object [option id] => Colors
     this.disabledKeys = {}; // object [option id] => bool
     this.row = 0;
     this.col = 0;
@@ -105,15 +101,15 @@ class Game {
 
       if (id == i) {
         // in correct spot
-        this.keyboardColors[id] = COLORS.GREEN;
-        this.board[this.row][i].color = COLORS.GREEN;
+        this.keyboardColors[id] = Colors.GREEN;
+        this.board[this.row][i].color = Colors.GREEN;
         numCorrect++;
       } else if (id < 5) {
         // guess was top 5, but not correct spot
-        if (this.keyboardColors[id] != COLORS.GREEN) {
-          this.keyboardColors[id] = COLORS.YELLOW;
+        if (this.keyboardColors[id] != Colors.GREEN) {
+          this.keyboardColors[id] = Colors.YELLOW;
         }
-        this.board[this.row][i].color = COLORS.YELLOW;
+        this.board[this.row][i].color = Colors.YELLOW;
       } else {
         // not correct
         this.disabledKeys[id] = true;
@@ -152,6 +148,5 @@ class Game {
   };
 }
 
-exports.Game = Game;
+exports.Factle = Factle;
 exports.GAME_STATUS = GAME_STATUS;
-exports.COLORS = COLORS;

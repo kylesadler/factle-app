@@ -5,6 +5,7 @@ import Modal from "@mui/material/Modal";
 
 import Backdrop from "@mui/material/Backdrop";
 import Fade from "@mui/material/Fade";
+import ModalPaper from "./ModalPaper";
 
 export default ({ open, onClose, children }) => {
   return (
@@ -22,7 +23,7 @@ export default ({ open, onClose, children }) => {
           style={{ height: "100vh", width: "100vw", display: "flex" }}
           onClick={onClose}
         >
-          {children}
+          <ModalPaper>{children}</ModalPaper>
         </div>
       </Fade>
     </Modal>
