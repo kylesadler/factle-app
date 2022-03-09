@@ -1,0 +1,18 @@
+#!/bin/bash 
+# copy and paste this into the terminal
+
+PUB_SSH_KEY=~/.ssh/id_rsa.pub
+if [ ! -f "$PUB_SSH_KEY" ]; then
+    # generate ssh key
+    echo '\n\n\n\n\n\n'| ssh-keygen -t rsa -b 4096
+fi
+echo "Add this to GitHub deploy keys:"
+echo
+cat $PUB_SSH_KEY
+echo
+
+#
+# add key to GH
+#
+
+git clone repo_name
