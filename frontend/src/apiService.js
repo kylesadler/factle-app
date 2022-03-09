@@ -26,6 +26,5 @@ exports.getAppData = () => {
 };
 
 exports.sendGameResults = (results, date) => {
-  console.log("sending game results");
   return postData("/api/send-game-results", { board: results, date });
 };
