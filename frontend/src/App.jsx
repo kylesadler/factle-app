@@ -49,6 +49,15 @@ const config = {
       }),
     ], // top 5 are in order
   },
+  // bannerText: "A test banner. We support Ukraine.",
+  // statisticsPageText: "Here is something I want to say",
+  // popup: {
+  //   headerText: "A Test Popup",
+  //   messageText: "This is something I want to say.",
+  //   callToActionText: "Check this out",
+  //   link: "https://twitter.com",
+  //   buttonColor: "#000",
+  // },
 };
 
 const { problem } = config;
@@ -74,7 +83,14 @@ export default () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <MainPage game={game} prompt={problem.prompt} options={shuffledOptions} />
+      <MainPage
+        game={game}
+        prompt={problem.prompt}
+        options={shuffledOptions}
+        bannerText={config.bannerText}
+        statisticsPageText={config.statisticsPageText}
+        popup={config.popup}
+      />
     </ThemeProvider>
   );
 };

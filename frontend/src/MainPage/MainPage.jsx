@@ -4,48 +4,68 @@ import Header from "./Header";
 import GameInterface from "./GameInterface/GameInterface";
 import StatisticsModal from "./Modals/StatisticsModal";
 import HowToPlayModal from "./Modals/HowToPlayModal";
+import CustomModal from "./Modals/CustomModal";
 
-export default observer(({ game, prompt, options }) => {
-  // prompt is a string
-  // options is array of { text, id } where ids 1-5 are correct answers in order
-  const [helpOpen, setHelpOpen] = useState(false);
-  const [statsOpen, setStatsOpen] = useState(false);
+export default observer(
+  ({ game, prompt, options, bannerText, statisticsPageText, popup }) => {
+    // prompt is a string
+    // options is array of { text, id } where ids 1-5 are correct answers in order
+    const [helpOpen, setHelpOpen] = useState(false);
+    const [statsOpen, setStatsOpen] = useState(false);
+    const [customOpen, setCustomOpen] = useState(false);
 
-  game.onComplete = ({ win }) => {
-    setTimeout(() => {
-      setStatsOpen(true);
-    }, 1100);
-  };
+    game.onComplete = ({ win }) => {
+      setTimeout(() => {
+        setStatsOpen(true);
+      }, 1100);
+    };
 
-  return (
-    <div>
-      <Header
-        onHelpClick={() => {
-          setHelpOpen(true);
-          // console.log("opening help");
-        }}
-        onStatsClick={() => {
-          setStatsOpen(true);
-          // console.log("opening stats");
-        }}
-      />
-      <GameInterface options={options} prompt={prompt} game={game} />
-      <HowToPlayModal
-        open={helpOpen}
-        onClose={() => {
-          // console.log("closing help");
-          setHelpOpen(false);
-        }}
-      />
-      <StatisticsModal
-        game={game}
-        prompt={prompt}
-        open={statsOpen}
-        onClose={() => {
-          // console.log("closing stats");
-          setStatsOpen(false);
-        }}
-      />
-    </div>
-  );
-});
+    useEffect(() => {
+      if (popup?.headerText) {
+        setCustomOpen(true);
+      }
+    }, [popup]);
+
+    return (
+      <div>
+        <Header
+          onHelpClick={() => {
+            setHelpOpen(true);
+            // console.log("opening help");
+          }}
+          onStatsClick={() => {
+            setStatsOpen(true);
+            // console.log("opening stats");
+          }}
+          bannerText={bannerText}
+        />
+        <GameInterface options={options} prompt={prompt} game={game} />
+        <HowToPlayModal
+          open={helpOpen}
+          onClose={() => {
+            // console.log("closing help");
+            setHelpOpen(false);
+          }}
+        />
+        <StatisticsModal
+          game={game}
+          prompt={prompt}
+          open={statsOpen}
+          onClose={() => {
+            // console.log("closing stats");
+            setStatsOpen(false);
+          }}
+          statisticsPageText={statisticsPageText}
+        />
+        <CustomModal
+          open={customOpen}
+          onClose={() => {
+            // console.log("closing stats");
+            setCustomOpen(false);
+          }}
+          popup={popup || {}}
+        />
+      </div>
+    );
+  }
+);

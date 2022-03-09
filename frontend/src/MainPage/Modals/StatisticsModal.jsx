@@ -233,39 +233,48 @@ const FollowUs = ({ onClose }) => {
   );
 };
 
-export default observer(({ open, onClose, game, prompt }) => {
-  const timeDifference = getTimeToMidnight();
+export default observer(
+  ({ open, onClose, game, prompt, statisticsPageText }) => {
+    const timeDifference = getTimeToMidnight();
 
-  const { wonGames, totalGames } = getStatistics();
+    const { wonGames, totalGames } = getStatistics();
 
-  console.log("wonGames", "totalGames");
-  console.log(wonGames, totalGames);
+    console.log("wonGames", "totalGames");
+    console.log(wonGames, totalGames);
 
-  return (
-    <Modal open={open} onClose={onClose}>
-      <Header />
-      {!isNaN(wonGames) && !isNaN(totalGames) ? (
+    return (
+      <Modal open={open} onClose={onClose}>
+        <Header />
+        {!isNaN(wonGames) && !isNaN(totalGames) ? (
+          <SectionBlock>
+            <WinningStats wonGames={wonGames} totalGames={totalGames} />
+          </SectionBlock>
+        ) : (
+          ""
+        )}
+        {game.status != GAME_STATUS.IN_PROGRESS ? (
+          <SectionBlock>
+            <EmojiCard game={game} prompt={prompt} />
+          </SectionBlock>
+        ) : (
+          ""
+        )}
+        {statisticsPageText ? (
+          <SectionBlock>
+            <CenteredText>{statisticsPageText}</CenteredText>
+          </SectionBlock>
+        ) : (
+          ""
+        )}
         <SectionBlock>
-          <WinningStats wonGames={wonGames} totalGames={totalGames} />
+          <CenteredText>
+            {`Next Factle in ${timeDifference.hours} hours and ${timeDifference.mintues} minutes!`}
+          </CenteredText>
         </SectionBlock>
-      ) : (
-        ""
-      )}
-      {game.status != GAME_STATUS.IN_PROGRESS ? (
         <SectionBlock>
-          <EmojiCard game={game} prompt={prompt} />
+          <FollowUs />
         </SectionBlock>
-      ) : (
-        ""
-      )}
-      <SectionBlock>
-        <CenteredText>
-          {`Next Factle in ${timeDifference.hours} hours and ${timeDifference.mintues} minutes!`}
-        </CenteredText>
-      </SectionBlock>
-      <SectionBlock>
-        <FollowUs />
-      </SectionBlock>
-    </Modal>
-  );
-});
+      </Modal>
+    );
+  }
+);
