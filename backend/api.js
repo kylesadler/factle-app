@@ -69,7 +69,9 @@ router.post("/send-game-results", async (request, response) => {
       const client = getClient();
       try {
         await client.connect();
-        await client.db("prod").collection("games").insertOne({ board });
+        const db = await client.db("prod");
+        const collection = await db.collection("games");
+        await collection.insertOne({ board });
       } catch (e) {
         console.log(e);
       } finally {

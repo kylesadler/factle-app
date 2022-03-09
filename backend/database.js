@@ -9,30 +9,32 @@ const initDatabase = ({
   databaseName = "prod", // name of mongo database
 
   // optional
-  localPort,
-  dstPort,
+  localPort = 27000,
+  dstPort = 27017,
 }) => {
-  if (!host || host == "localhost" || host == "127.0.0.1") {
-    client = new MongoClient(`mongodb://localhost:27017/${databaseName}`);
-  } else {
-    tunnel(
-      {
-        host,
-        username,
-        privateKey,
-        dstPort: dstPort || 27017,
-        localPort: localPort || 27000,
-        // keepAlive:true,
-      },
-      async (error, tnl) => {
-        if (error) {
-          console.log("SSH connection error: " + error);
-        }
-
-        client = new MongoClient(`mongodb://localhost:27017/${databaseName}`);
+  tunnel(
+    {
+      host,
+      username,
+      privateKey,
+      dstPort,
+      localPort,
+      keepAlive: true,
+    },
+    async (error, tnl) => {
+      if (error) {
+        console.log("SSH connection error: " + error);
       }
-    );
-  }
+
+      client = new MongoClient(
+        `mongodb://localhost:${localPort}/${databaseName}`
+      );
+      await client.connect();
+      await client.db("admin").command({ ping: 1 });
+      console.log("Connected successfully to server");
+      await client.close();
+    }
+  );
 };
 
 exports.initDatabase = initDatabase;
