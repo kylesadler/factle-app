@@ -4,11 +4,12 @@ const app = express();
 const server = require("http").createServer(app);
 const port = 8080;
 const { initDatabase } = require("./backend/database");
+const fs = require("fs");
 
 initDatabase({
-  host: "localhost",
-  // username,
-  // privateKey,
+  host: "96.30.198.238",
+  username: "mongotunnel",
+  privateKey: fs.readFileSync("/root/.ssh/id_rsa"),
 });
 // app.use(cors({ origin: "*" }));
 
