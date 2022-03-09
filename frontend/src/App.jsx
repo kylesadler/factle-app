@@ -18,7 +18,7 @@ export default () => {
   */
 
   useEffect(async () => {
-    const appData = require("./appData.json");
+    const appData = require("../../appData.json");
     // const appData = await getAppData();
     setAppData(appData);
     setIsLoaded(true);
