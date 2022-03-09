@@ -50,6 +50,7 @@ export default observer(({ options, game, onSelect, onBackspace, onEnter }) => {
           text={"ENTER"}
           onClick={onEnter}
           styles={{ borderBottomLeftRadius: 17 }}
+          textStyle={{ fontSize: "1rem" }}
         />
         {lastRow.map((option) => {
           return (

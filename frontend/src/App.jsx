@@ -42,7 +42,7 @@ const config = {
       "Nicki Minaj",
       "Beyonce",
       "Zendaya",
-      "Kyle Sadler",
+      "Floyd Mayweather",
       "Jerry Seinfeld",
       ...[...Array(18).keys()].map((_, id) => {
         return `Wrong Option ${id}`;

@@ -11,7 +11,7 @@ export default ({ onHelpClick, onStatsClick }) => {
         justifyContent: "space-between",
         alignItems: "center",
         width: "100%",
-        backgroundColor: "#000",
+        backgroundColor: "#121213",
         borderBottom: "1px solid #d3d6da",
       }}
     >
