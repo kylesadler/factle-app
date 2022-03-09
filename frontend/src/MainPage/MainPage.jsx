@@ -14,11 +14,12 @@ export default observer(
     const [statsOpen, setStatsOpen] = useState(false);
     const [customOpen, setCustomOpen] = useState(false);
 
-    game.onComplete = ({ win }) => {
-      setTimeout(() => {
-        setStatsOpen(true);
-      }, 1100);
-    };
+    if (game)
+      game.onComplete = ({ win }) => {
+        setTimeout(() => {
+          setStatsOpen(true);
+        }, 1100);
+      };
 
     useEffect(() => {
       if (popup?.headerText) {
