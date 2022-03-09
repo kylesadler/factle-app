@@ -6,6 +6,7 @@ import "animate.css";
 const GAME_STATUS = {
   IN_PROGRESS: "in progress",
   WON: "won",
+  LOADING: "loading",
   LOST: "lost",
 };
 
@@ -62,10 +63,11 @@ const animateCSS = (
 // ids 1-5 are the answers
 
 class Factle {
-  constructor({ solution, onComplete }) {
+  constructor({ solution, onComplete, isLoaded }) {
     // this.options = options; // array of 23 strings in order
 
     this.solution = solution;
+    this.isLoaded = isLoaded;
 
     // 5 x 5 array of guesses (options) on gameboard. only current row can be modified
     this.board = [...Array(5).keys()].map(() => {
@@ -85,7 +87,8 @@ class Factle {
     this.keyboardColors = {}; // object [option id] => Colors
     this.row = 0;
     this.col = 0;
-    this.status = GAME_STATUS.IN_PROGRESS;
+    this.status =
+      this.isLoaded == false ? GAME_STATUS.LOADING : GAME_STATUS.IN_PROGRESS;
 
     this.onComplete = onComplete; // ({ win: bool }) => {}
 
