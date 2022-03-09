@@ -87,6 +87,7 @@ const SectionBlock = ({ children }) => {
 const EmojiCard = ({ game, prompt }) => {
   const ref = useRef(null);
   const { title, emojisLines } = getShareString({ game, prompt });
+  const shareText = `${title}\n${prompt}\n` + emojisLines.join("\n");
 
   return (
     <React.Fragment>
@@ -132,12 +133,25 @@ const EmojiCard = ({ game, prompt }) => {
       </Paper>
       <div style={{ margin: "auto", textAlign: "center", paddingTop: 10 }}>
         <Button
+          variant="contained"
+          style={{ backgroundColor: Colors.TWITTER_COLOR }}
+          onClick={(event) => {
+            copyToClipboard(`${title}\n${prompt}\n` + emojisLines.join("\n"));
+            window.open(
+              `https://twitter.com/intent/tweet?text=${encodeURI(shareText)}`
+            );
+          }}
+        >
+          Tweet
+        </Button>
+        <div style={{ display: "inline", paddingRight: 10 }}></div>
+        <Button
           ref={ref}
           variant="contained"
           style={{ backgroundColor: Colors.GREEN }}
           onClick={(event) => {
             event.stopPropagation();
-            copyToClipboard(`${title}\n${prompt}\n` + emojisLines.join("\n"));
+            copyToClipboard(shareText);
             ref.current.innerHTML = "Copied!";
             ref.current.style.backgroundColor = "#eea849";
 
