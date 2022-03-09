@@ -45,7 +45,7 @@ const config = {
       "Floyd Mayweather",
       "Jerry Seinfeld",
       ...[...Array(18).keys()].map((_, id) => {
-        return `Wrong Option ${id}`;
+        return `Wrong Option France ${id}`; // 11 letter max word
       }),
     ], // top 5 are in order
   },

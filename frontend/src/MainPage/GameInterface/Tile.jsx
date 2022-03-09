@@ -36,6 +36,7 @@ export default ({ text, onClick, wrapperStyle, tileStyle, textStyle }) => {
           style={{
             textAlign: "center",
             // width: "90%",
+            lineHeight: 1,
             color: Colors.WHITE,
             fontWeight: 600,
             ...(textStyle || {}),

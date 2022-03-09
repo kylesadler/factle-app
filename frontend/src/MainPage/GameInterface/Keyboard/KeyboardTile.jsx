@@ -51,6 +51,7 @@ export default ({ text, onClick, styles = {}, textStyle = {} }) => {
             color: Colors.WHITE,
             fontWeight: 600,
             fontSize: "0.8rem",
+            lineHeight: 1,
             ...(styles.backgroundColor == Colors.DARK_GRAY
               ? { color: Colors.INCORRECT_GRAY }
               : {}),
