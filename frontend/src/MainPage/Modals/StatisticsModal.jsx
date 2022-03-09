@@ -185,7 +185,7 @@ const FollowUs = ({ onClose }) => {
       {/* <CenteredText>Follow us on</CenteredText> */}
       <div style={{ display: "flex", alignItems: "center" }}>
         <Typography style={{ paddingRight: 10 }} variant="body1">
-          Follow us on
+          Follow us
         </Typography>
         <div style={{ display: "flex", padding: "5px, 0px" }}>
           <Button

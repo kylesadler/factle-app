@@ -20,6 +20,7 @@ export default ({ text, onClick, wrapperStyle, tileStyle, textStyle }) => {
       <div
         style={{
           width: "100%",
+          boxSizing: "border-box",
           height: "100%",
           display: "flex",
           flexDirection: "column",
@@ -38,6 +39,7 @@ export default ({ text, onClick, wrapperStyle, tileStyle, textStyle }) => {
             // width: "90%",
             lineHeight: 1,
             color: Colors.WHITE,
+            fontSize: useMediaQuery("(max-width:522px)") ? "0.8rem" : "1rem",
             fontWeight: 600,
             ...(textStyle || {}),
           }}

@@ -35,6 +35,7 @@ export default ({ text, onClick, styles = {}, textStyle = {} }) => {
           flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",
+          boxSizing: "border-box",
 
           // add padding here
           borderRadius: 4,
@@ -50,7 +51,7 @@ export default ({ text, onClick, styles = {}, textStyle = {} }) => {
             // width: "90%",
             color: Colors.WHITE,
             fontWeight: 600,
-            fontSize: "0.8rem",
+            fontSize: useMediaQuery("(max-width:522px)") ? "0.7rem" : "0.8rem",
             lineHeight: 1,
             ...(styles.backgroundColor == Colors.DARK_GRAY
               ? { color: Colors.INCORRECT_GRAY }
