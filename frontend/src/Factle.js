@@ -215,8 +215,8 @@ class Factle {
   getResults = () => {
     const output = {};
 
-    [...Array(5)].forEach((i) => {
-      [...Array(5)].forEach((j) => {
+    [...Array(5)].forEach((__, i) => {
+      [...Array(5)].forEach((_, j) => {
         const key = `${i}${j}`; // zero indexed row, col
         output[key] = this.board[i][j].status;
       });
