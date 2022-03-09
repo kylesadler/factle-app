@@ -102,7 +102,7 @@ router.get("/get-game-results", async (request, response) => {
     await client.connect();
     // prettier-ignore
     const pipeline = [
-      { $match: { "date": getCentralTimeDate() } },
+      { $match: { date: getCentralTimeDate() } },
       { $replaceRoot: { newRoot: "$board" } },
     ];
     const db = await client.db("prod");
