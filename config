@@ -1,5 +1,0 @@
-PORT=8080
-DOMAIN_NAME=""
-
-# "true" or "false"
-USE_HTTPS="true"
