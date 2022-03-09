@@ -44,8 +44,8 @@ export default observer(({ options, prompt, game }) => {
         onBackspace={() => {
           game.onBackspace();
         }}
-        onEnter={() => {
-          game.onEnter();
+        onEnter={async () => {
+          await game.onEnter();
         }}
       />
       <VerticlePadding />

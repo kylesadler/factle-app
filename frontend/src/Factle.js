@@ -1,6 +1,7 @@
 import { makeAutoObservable } from "mobx";
 import { getStatistics, setStatistics } from "./statistics";
 import Colors from "./Colors";
+import "animate.css";
 
 const GAME_STATUS = {
   IN_PROGRESS: "in progress",
@@ -21,6 +22,34 @@ const gameStatistics = {
   gamesWon: 0,
   winningStreak: 0,
   maxWinningStreak: 0,
+};
+
+const animateCSS = (
+  element,
+  animation,
+  duration = "1.0s",
+  prefix = "animate__"
+) => {
+  return new Promise((resolve, reject) => {
+    const animationName = `${prefix}${animation}`;
+    const node = document.querySelector(element);
+    node.style.setProperty("--animate-duration", duration);
+
+    // keep element from fading out
+    node.style.setProperty("visibility", "visible", "important");
+    node.style.setProperty("opacity", 1, "important");
+
+    node.classList.add(`${prefix}animated`, animationName);
+
+    // When the animation ends, we clean the classes and resolve the Promise
+    function handleAnimationEnd(event) {
+      event.stopPropagation();
+      node.classList.remove(`${prefix}animated`, animationName);
+      resolve("Animation ended");
+    }
+
+    node.addEventListener("animationend", handleAnimationEnd, { once: true });
+  });
 };
 
 /* options is list of 23 strings
@@ -94,10 +123,20 @@ class Factle {
     }
   };
 
-  onEnter = () => {
+  onEnter = async () => {
     // console.log("enter");
 
-    if (this.status != GAME_STATUS.IN_PROGRESS || this.col != 5) return;
+    if (this.status != GAME_STATUS.IN_PROGRESS) return;
+
+    const currentRow = `#root > div:first-child > div:nth-child(2) > div:nth-child(2) > div:nth-child(${
+      this.row + 2
+    })`;
+
+    if (this.col != 5) {
+      // shake current row
+      animateCSS(currentRow, "headShake");
+      return;
+    }
 
     let numCorrect = 0;
     const guess = this.board[this.row];
@@ -123,8 +162,17 @@ class Factle {
         this.keyboardColors[id] = Colors.GRAY;
       }
 
+      // await animateCSS(
+      //   `${currentRow} > div:nth-child(${i + 1})`,
+      //   "flipInX",
+      //   "0.6s"
+      // );
+
       delete this.board[this.row][i].isActive;
     }
+
+    // don't need to await
+    animateCSS(currentRow, "flipInY", "1.3s");
 
     if (this.row == 4 || numCorrect == 5) {
       // at end of game

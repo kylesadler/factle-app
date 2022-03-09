@@ -22,6 +22,7 @@
     "@emotion/styled": "^11.8.1",
     "@mui/icons-material": "^5.4.4",
     "@mui/material": "^5.4.4",
+    "animate.css": "^4.1.1",
     "express": "^4.17.2",
     "mobx": "^6.4.2",
     "mobx-react-lite": "^3.3.0",
