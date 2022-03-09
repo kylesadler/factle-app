@@ -62,7 +62,7 @@ router.get("/get-app-data", async (request, response) => {
 
 router.post("/send-game-results", async (request, response) => {
   if (request.body) {
-    const { board } = request.body;
+    const { board, date } = request.body;
     if (board) {
       console.log("received game results");
       console.log(board);
@@ -71,7 +71,7 @@ router.post("/send-game-results", async (request, response) => {
         await client.connect();
         const db = await client.db("prod");
         const collection = await db.collection("games");
-        await collection.insertOne({ board });
+        await collection.insertOne({ board, date });
       } catch (e) {
         console.log(e);
       } finally {
@@ -82,15 +82,40 @@ router.post("/send-game-results", async (request, response) => {
   }
 });
 
+const getCentralTimeDate = () => {
+  const centralTime = new Date(
+    new Date().getTime() + new Date().getTimezoneOffset() * 60000 + 3600000 * -6
+  );
+
+  var dd = String(centralTime.getDate()).padStart(2, "0");
+  var mm = String(centralTime.getMonth() + 1).padStart(2, "0"); //January is 0!
+  var yyyy = centralTime.getFullYear();
+
+  return mm + "/" + dd + "/" + yyyy;
+
+  // "03/09/2022"
+};
+
 router.get("/get-game-results", async (request, response) => {
   const client = getClient();
   try {
     await client.connect();
-    const pipeline = [{ $group: { _id: "$stars", count: { $sum: 1 } } }];
-    const result = await client
-      .db("prod")
-      .collection("games")
-      .aggregate(pipeline);
+    // prettier-ignore
+    const pipeline = [
+      // { $match: { date: getCentralTimeDate() } },
+      { $replaceRoot: { newRoot: "$board" } },
+    ];
+    const db = await client.db("prod");
+
+    const collection = await db.collection("games");
+    const pointer = await collection.aggregate(pipeline);
+    const result = [];
+    for await (const doc of pointer) {
+      result.push(doc);
+    }
+    console.log("got results", result);
+
+    response.json(result);
   } finally {
     // Ensures that the client will close when you finish/error
     await client.close();

@@ -25,7 +25,11 @@ export default () => {
   }, []);
 
   const {
-    problem: { prompt = "", options = [...Array(23).map((i) => "")] },
+    problem: {
+      prompt = "",
+      options = [...Array(23).map((i) => "")],
+      date = "",
+    },
     config: { popup, bannerText, statisticsPageText },
   } = appData;
 
@@ -38,6 +42,7 @@ export default () => {
   const game = new Factle({
     solution: options.slice(0, 5),
     isLoaded,
+    date,
   });
 
   return (

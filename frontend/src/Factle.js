@@ -64,11 +64,12 @@ const animateCSS = (
 // ids 1-5 are the answers
 
 class Factle {
-  constructor({ solution, onComplete, isLoaded }) {
+  constructor({ solution, onComplete, isLoaded, date }) {
     // this.options = options; // array of 23 strings in order
 
     this.solution = solution;
     this.isLoaded = isLoaded;
+    this.date = date;
 
     // 5 x 5 array of guesses (options) on gameboard. only current row can be modified
     this.board = [...Array(5).keys()].map(() => {
@@ -205,7 +206,7 @@ class Factle {
       stats.lastGame = this.board;
       setStatistics(stats);
 
-      sendGameResults(this.getResults());
+      sendGameResults(this.getResults(), this.date);
     }
 
     this.row++;
