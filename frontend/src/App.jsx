@@ -1,95 +1,54 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Factle } from "./Factle";
-import {
-  ThemeProvider,
-  createTheme,
-  responsiveFontSizes,
-} from "@mui/material/styles";
-import { observer } from "mobx-react-lite";
-
 import MainPage from "./MainPage/MainPage";
+import { ThemeProvider } from "@mui/material/styles";
+import theme from "./theme";
+import { getAppData } from "./apiService";
+// const appData = require("./appData.json");
 
-let theme = createTheme({
-  typography: {
-    // fontFamily: "Hepta Slab", // needs to be bold
-    fontFamily:
-      "nyt-karnakcondensed, HelveticaNeue-Light, Helvetica Neue Light, Helvetica Neue, Helvetica, Arial, Lucida Grande",
-    h1: { color: "white" },
-    h2: { color: "white" },
-    h3: {
-      color: "white",
-      fontWeight: 700,
-    },
-    h4: { color: "white" },
-    h5: { color: "white" },
-    h6: { color: "white" },
-    body: { color: "white" },
-    body1: { color: "white" },
-
-    button: {
-      textTransform: "none",
-    },
-  },
-});
-
-theme = responsiveFontSizes(theme);
-
-// this is the data that can change
-const config = {
-  problem: {
-    prompt: "Top 5 Most Followed People on Instagram",
-    options: [
-      "Nicki Minaj",
-      "Beyonce",
-      "Zendaya",
-      "Floyd Mayweather",
-      "Jerry Seinfeld",
-      ...[...Array(18).keys()].map((_, id) => {
-        return `Wrong Option France ${id}`; // 11 letter max word
-      }),
-    ], // top 5 are in order
-  },
-  // bannerText: "A test banner. We support Ukraine.",
-  // statisticsPageText: "Here is something I want to say",
-  // popup: {
-  //   headerText: "A Test Popup",
-  //   messageText: "This is something I want to say.",
-  //   callToActionText: "Check this out",
-  //   link: "https://twitter.com",
-  //   buttonColor: "#000",
-  // },
-};
-
-const { problem } = config;
-
-/**
+export default () => {
+  const [appData, setAppData] = useState({ problem: {}, config: {} });
+  const [isLoaded, setIsLoaded] = useState(false);
+  /**
   options is list of 23 strings in order
   prompt is a string
 
   shuffledOptions is array of { text, id }
   ids 1-5 are the correct answers in order
- */
+  */
 
-const shuffledOptions = problem.options
-  .map((text, index) => {
-    return { text, id: index };
-  })
-  .sort(() => Math.random() - 0.5);
+  useEffect(async () => {
+    const appData = require("./appData.json");
+    // const appData = await getAppData();
+    setAppData(appData);
+    setIsLoaded(true);
+  }, []);
 
-export default () => {
+  const {
+    problem: { prompt = "", options = [...Array(23).map((i) => "")] },
+    config: { popup, bannerText, statisticsPageText },
+  } = appData;
+
+  const shuffledOptions = options
+    .map((text, index) => {
+      return { text, id: index };
+    })
+    .sort(() => Math.random() - 0.5);
+
   const game = new Factle({
-    solution: problem.options.slice(0, 5),
+    solution: options.slice(0, 5),
+    isLoaded,
   });
 
   return (
     <ThemeProvider theme={theme}>
       <MainPage
         game={game}
-        prompt={problem.prompt}
+        prompt={prompt}
         options={shuffledOptions}
-        bannerText={config.bannerText}
-        statisticsPageText={config.statisticsPageText}
-        popup={config.popup}
+        bannerText={bannerText}
+        statisticsPageText={statisticsPageText}
+        popup={popup}
       />
     </ThemeProvider>
   );
