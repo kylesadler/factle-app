@@ -2,6 +2,7 @@ import { makeAutoObservable } from "mobx";
 import { getStatistics, setStatistics } from "./statistics";
 import Colors from "./Colors";
 import "animate.css";
+import { sendGameResults } from "./apiService";
 
 const GAME_STATUS = {
   IN_PROGRESS: "in progress",
@@ -203,10 +204,25 @@ class Factle {
       stats.lastGameDate = today.toDateString();
       stats.lastGame = this.board;
       setStatistics(stats);
+
+      sendGameResults(this.getResults());
     }
 
     this.row++;
     this.col = 0;
+  };
+
+  getResults = () => {
+    const output = {};
+
+    [...Array(5)].forEach((i) => {
+      [...Array(5)].forEach((j) => {
+        const key = `${i}${j}`; // zero indexed row, col
+        output[key] = this.board[i][j].status;
+      });
+    });
+
+    return output;
   };
 }
 

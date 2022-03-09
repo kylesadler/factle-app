@@ -3,8 +3,16 @@ const express = require("express");
 const app = express();
 const server = require("http").createServer(app);
 const port = 8080;
+const { initDatabase } = require("./backend/database");
 
+initDatabase({
+  host: "localhost",
+  // username,
+  // privateKey,
+});
 // app.use(cors({ origin: "*" }));
+
+app.use(express.json());
 
 // connect api routes from "backend/api.js" to "/api" url prefix
 app.use("/api", require("./backend/api"));
