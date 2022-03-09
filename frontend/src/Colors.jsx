@@ -23,4 +23,7 @@ export default {
   BLACK: "#000000",
   DARK_GRAY: "#3a3a3c",
   WHITE: "#FFFFFF",
+
+  GRAY_BORDER: "#565758",
+  INCORRECT_GRAY: "rgb(110, 110, 110)",
 };

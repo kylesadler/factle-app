@@ -39,7 +39,6 @@ export default observer(({ options, game, onSelect, onBackspace, onEnter }) => {
                       ? { backgroundColor: game.keyboardColors[option.id] }
                       : {}
                   }
-                  disabled={game.disabledKeys[option.id]}
                 />
               );
             })}
@@ -64,7 +63,6 @@ export default observer(({ options, game, onSelect, onBackspace, onEnter }) => {
                   ? { backgroundColor: game.keyboardColors[option.id] }
                   : {}
               }
-              disabled={game.disabledKeys[option.id]}
             />
           );
         })}

@@ -36,7 +36,7 @@ export default ({ text, onClick, wrapperStyle, tileStyle, textStyle }) => {
             textAlign: "center",
             width: "90%",
             color: Colors.WHITE,
-            fontWeight: "bold",
+            fontWeight: 600,
             ...(textStyle || {}),
           }}
           variant="body1"

@@ -2,7 +2,7 @@ import React from "react";
 import Typography from "@mui/material/Typography";
 import { observer } from "mobx-react-lite";
 import BoardTileRow from "../GameBoard/BoardTileRow";
-import { GAME_STATUS } from "../../../Factle";
+import { GAME_STATUS, BOARD_TILE_STATUSES } from "../../../Factle";
 import Colors from "../../../Colors";
 import BoardTile from "./BoardTile";
 
@@ -30,6 +30,10 @@ const RankingBlock = () => {
   );
 };
 
+const statusToColor = {};
+statusToColor[BOARD_TILE_STATUSES.CORRECT] = Colors.GREEN;
+statusToColor[BOARD_TILE_STATUSES.PRESENT] = Colors.YELLOW;
+statusToColor[BOARD_TILE_STATUSES.NOT_PRESENT] = Colors.DARK_GRAY;
 export default observer(({ game }) => {
   //   console.log("board", game.board);
   //   console.log("row, col", game.row, game.col);
@@ -41,8 +45,14 @@ export default observer(({ game }) => {
         // row is len 5 array of options
         return (
           <BoardTileRow>
-            {row.map(({ text, color }) => {
-              return <BoardTile text={text} color={color} />;
+            {row.map(({ text, status, isActive }) => {
+              return (
+                <BoardTile
+                  text={text}
+                  color={statusToColor[status]}
+                  borderColor={isActive ? Colors.GRAY_BORDER : undefined}
+                />
+              );
             })}
           </BoardTileRow>
         );

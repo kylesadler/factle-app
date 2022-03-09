@@ -8,6 +8,12 @@ const GAME_STATUS = {
   LOST: "lost",
 };
 
+const BOARD_TILE_STATUSES = {
+  CORRECT: "correct",
+  PRESENT: "present",
+  NOT_PRESENT: "not present",
+};
+
 // an option is {text, id}
 
 const gameStatistics = {
@@ -41,13 +47,13 @@ class Factle {
           text: undefined,
 
           // visual state
-          color: undefined,
+          status: undefined,
+          isActive: false,
         };
       });
     });
 
     this.keyboardColors = {}; // object [option id] => Colors
-    this.disabledKeys = {}; // object [option id] => bool
     this.row = 0;
     this.col = 0;
     this.status = GAME_STATUS.IN_PROGRESS;
@@ -75,6 +81,7 @@ class Factle {
     });
     if (this.col <= 4 && !alreadySelected) {
       this.board[this.row][this.col] = option;
+      this.board[this.row][this.col].isActive = true;
       this.col++;
     }
   };
@@ -102,28 +109,32 @@ class Factle {
       if (id == i) {
         // in correct spot
         this.keyboardColors[id] = Colors.GREEN;
-        this.board[this.row][i].color = Colors.GREEN;
+        this.board[this.row][i].status = BOARD_TILE_STATUSES.CORRECT;
         numCorrect++;
       } else if (id < 5) {
         // guess was top 5, but not correct spot
         if (this.keyboardColors[id] != Colors.GREEN) {
           this.keyboardColors[id] = Colors.YELLOW;
         }
-        this.board[this.row][i].color = Colors.YELLOW;
+        this.board[this.row][i].status = BOARD_TILE_STATUSES.PRESENT;
       } else {
         // not correct
-        this.disabledKeys[id] = true;
+        this.board[this.row][i].status = BOARD_TILE_STATUSES.NOT_PRESENT;
+        this.keyboardColors[id] = Colors.GRAY;
       }
+
+      delete this.board[this.row][i].isActive;
     }
 
     if (this.row == 4 || numCorrect == 5) {
       // at end of game
       let stats = getStatistics();
+      stats.wonGames = stats.wonGames ? stats.wonGames : 0;
 
       if (numCorrect == 5) {
         // console.log("win!");
         this.status = GAME_STATUS.WON;
-        stats.wonGames = stats.wonGames ? stats.wonGames + 1 : 1;
+        stats.wonGames++;
         stats.wonLastGame = true;
 
         this.onComplete({ win: true });
@@ -150,3 +161,4 @@ class Factle {
 
 exports.Factle = Factle;
 exports.GAME_STATUS = GAME_STATUS;
+exports.BOARD_TILE_STATUSES = BOARD_TILE_STATUSES;

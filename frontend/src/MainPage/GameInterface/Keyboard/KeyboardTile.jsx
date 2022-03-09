@@ -1,28 +1,64 @@
 import React, { useState, useEffect } from "react";
 import Tile from "../Tile";
 import Colors from "../../../Colors";
+import { Button, Typography, useMediaQuery } from "@mui/material";
+import { styled } from "@mui/material/styles";
 
-export default ({
-  text,
-  onClick,
-  disabled = false,
-  styles = {},
-  textStyle = {},
-}) => {
+const ColorButton = styled(Button)(({ theme }) => ({
+  color: Colors.DARK_GRAY,
+  backgroundColor: Colors.LIGHT_GRAY,
+  "&:hover": {
+    backgroundColor: Colors.INCORRECT_GRAY,
+  },
+}));
+
+export default ({ text, onClick, styles = {}, textStyle = {} }) => {
   return (
-    <Tile
-      text={text}
-      onClick={onClick}
-      wrapperStyle={{ padding: 3 }}
-      tileStyle={{
-        borderRadius: 5,
-        backgroundColor: disabled ? Colors.GRAY : Colors.LIGHT_GRAY,
-        ...styles,
+    <div
+      style={{
+        width: "20%",
+        maxWidth: 100,
+        height: useMediaQuery("(max-height:600px)") ? 40 : 55,
+        minHeight: 40,
+        padding: 3,
       }}
-      textStyle={{
-        // color: disabled ? Colors.BLACK : Colors.WHITE,
-        ...textStyle,
-      }}
-    />
+    >
+      {/* tile div */}
+      <ColorButton
+        disableRipple
+        variant="contained"
+        style={{
+          width: "100%",
+          height: "100%",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+
+          // add padding here
+          borderRadius: 4,
+          // backgroundColor: Colors.LIGHT_GRAY,
+          ...styles,
+        }}
+        onClick={onClick}
+      >
+        {/* text */}
+        <Typography
+          style={{
+            textAlign: "center",
+            width: "90%",
+            color: Colors.WHITE,
+            fontWeight: 600,
+            ...(styles.backgroundColor == Colors.DARK_GRAY
+              ? { color: Colors.INCORRECT_GRAY }
+              : {}),
+            ...textStyle,
+          }}
+          variant="body1"
+        >
+          {text || ""}
+        </Typography>
+      </ColorButton>
+    </div>
   );
 };
