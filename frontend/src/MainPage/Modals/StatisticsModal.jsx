@@ -194,7 +194,9 @@ const FollowUs = ({ onClose }) => {
           <Button
             variant="contained"
             style={{ backgroundColor: Colors.TWITTER_COLOR }}
-            onClick={onClose}
+            onClick={() => {
+              window.open("https://twitter.com/pipedream_labs");
+            }}
           >
             Twitter
           </Button>
@@ -205,7 +207,9 @@ const FollowUs = ({ onClose }) => {
               background:
                 "-webkit-linear-gradient(left, rgb(238, 179, 90) 0%, rgb(224, 69, 106) 50%, rgb(148, 45, 178) 100%)",
             }}
-            onClick={onClose}
+            onClick={() => {
+              window.open("https://instagram.com/garrett.mccurrach");
+            }}
           >
             Instagram
           </Button>
