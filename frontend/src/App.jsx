@@ -5,6 +5,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import theme from "./theme";
 import { getAppData } from "./apiService";
 // const appData = require("./appData.json");
+import { getCentralTimeDate } from "../../util";
 
 export default () => {
   const [appData, setAppData] = useState({ problem: {}, config: {} });
@@ -18,11 +19,26 @@ export default () => {
   */
 
   useEffect(async () => {
-    let appData = require("../../appData.json");
-    appData.problem = appData.problem || {};
-    appData.config = appData.config || {};
+    const appData = require("../../appData.json");
+    const todaysDateString = getCentralTimeDate();
+
+    console.log("todaysDateString");
+    console.log(todaysDateString);
+    console.log(
+      appData.facles.filter(({ date }) => {
+        return date == todaysDateString;
+      })
+    );
+
+    // technically this is the factle and the app config
+    const todaysFactle = appData.facles.filter(({ date }) => {
+      return date == todaysDateString;
+    })[0];
+
+    todaysFactle.problem = todaysFactle.problem || {};
+    todaysFactle.config = todaysFactle.config || {};
     // const appData = await getAppData();
-    setAppData(appData);
+    setAppData(todaysFactle);
     setIsLoaded(true);
   }, []);
 

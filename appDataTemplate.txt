@@ -1,5 +1,7 @@
 {
   "facles": [
+    // add new objects to the factles array
+    // to queue factles in the future
     {
       "date": "03/09/2022",
       "problem": {
@@ -44,41 +46,6 @@
         },
         "bannerText": "A test banner. We support Ukraine.",
         "statisticsPageText": "Here is something I want to say"
-      }
-    },
-    {
-      "date": "03/12/2022",
-      "problem": {
-        "prompt": "Top 5 Countries by Someting",
-        "options": [
-          "Mexico",
-          "Egypt",
-          "Brazil",
-          "Portugal",
-          "South Africa",
-
-          "United States",
-          "China",
-          "Japan",
-          "Germany",
-          "United Kingdom",
-
-          "Australia",
-          "Spain",
-          "Switzerland",
-          "Norway",
-          "Iraq",
-
-          "New Zealand",
-          "South Korea",
-          "Italy",
-          "Poland",
-          "Russia",
-
-          "India",
-          "France",
-          "Canada"
-        ]
       }
     }
   ]

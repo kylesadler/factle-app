@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express();
 const { getClient } = require("./database");
+const { getCentralTimeDate } = require("../util");
 
 const getLatestData = async () => {
   return {
@@ -81,20 +82,6 @@ router.post("/send-game-results", async (request, response) => {
     }
   }
 });
-
-const getCentralTimeDate = () => {
-  const centralTime = new Date(
-    new Date().getTime() + new Date().getTimezoneOffset() * 60000 + 3600000 * -6
-  );
-
-  var dd = String(centralTime.getDate()).padStart(2, "0");
-  var mm = String(centralTime.getMonth() + 1).padStart(2, "0"); //January is 0!
-  var yyyy = centralTime.getFullYear();
-
-  return mm + "/" + dd + "/" + yyyy;
-
-  // "03/09/2022"
-};
 
 router.get("/get-game-results", async (request, response) => {
   const client = getClient();

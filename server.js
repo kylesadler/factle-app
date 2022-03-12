@@ -9,7 +9,8 @@ const fs = require("fs");
 initDatabase({
   host: "96.30.198.238",
   username: "mongotunnel",
-  privateKey: fs.readFileSync("/root/.ssh/id_rsa"),
+  // privateKey: fs.readFileSync("/root/.ssh/id_rsa"),
+  privateKey: fs.readFileSync("/Users/kyle/.ssh/id_rsa"),
 });
 // app.use(cors({ origin: "*" }));
 
