@@ -3,8 +3,6 @@ import { Factle } from "./Factle";
 import MainPage from "./MainPage/MainPage";
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "./theme";
-import { getAppData } from "./apiService";
-// const appData = require("./appData.json");
 import { getCentralTimeDate } from "../../util";
 
 export default () => {
@@ -37,7 +35,6 @@ export default () => {
 
     todaysFactle.problem = todaysFactle.problem || {};
     todaysFactle.config = todaysFactle.config || {};
-    // const appData = await getAppData();
     setAppData(todaysFactle);
     setIsLoaded(true);
   }, []);

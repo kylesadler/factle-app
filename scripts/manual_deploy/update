@@ -1,0 +1,15 @@
+#!/bin/bash 
+
+source ./config
+source install_scripts/nginx
+
+if [[ $USE_HTTPS = "true" ]] then
+    deploy_nginx_http $PORT
+else
+    deploy_nginx_https $PORT $DOMAIN_NAME
+fi
+
+docker stop server || true &> /dev/null
+docker rm server || true &> /dev/null
+docker build --tag server-image .
+docker run -d -p $PORT:$PORT --name server server-image  &> /dev/null

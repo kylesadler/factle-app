@@ -1,0 +1,14 @@
+#!/bin/bash 
+
+source ./config
+
+docker stop server &> /dev/null || true
+docker rm server &> /dev/null || true
+docker build --tag server-image .
+docker run -d -p $PORT:$PORT --name server server-image  &> /dev/null
+
+echo
+
+trap "docker stop server &> /dev/null || true" SIGINT SIGTERM
+
+docker logs -f server
