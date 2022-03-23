@@ -1,7 +1,0 @@
-#!/bin/bash
-
-PORT=8080
-DOMAIN_NAME='factle.app'
-
-# "true" or "false"
-USE_HTTPS="true"

@@ -1,0 +1,79 @@
+##
+# Deploy this to google kubernetes engine using gcloud and kubectl cli tools
+# switch kubectl contexts with "kubectl use-context [gke cluster context]"
+##
+
+# GKE managed TLS certificate
+apiVersion: networking.gke.io/v1beta2
+kind: ManagedCertificate
+metadata:
+  name: factle-xyz-cert
+spec:
+  domains:
+    - factle.xyz
+---
+# Docker Hub login info
+apiVersion: v1
+data:
+  .dockerconfigjson: eyJhdXRocyI6eyJodHRwczovL2luZGV4LmRvY2tlci5pby92MS8iOnsidXNlcm5hbWUiOiJreWxlc2FkbGVyNSIsInBhc3N3b3JkIjoieTkxa1ptYllEWW4zaHp1MDJtYmFjZm1xYzdoOEdrS0oiLCJlbWFpbCI6Imt5bGVzYWRsZXI1QGdtYWlsLmNvbSIsImF1dGgiOiJhM2xzWlhOaFpHeGxjalU2ZVRreGExcHRZbGxFV1c0emFIcDFNREp0WW1GalptMXhZemRvT0VkclMwbz0ifX19
+kind: Secret
+metadata:
+  name: regcred
+  namespace: default
+type: kubernetes.io/dockerconfigjson
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: factle-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: factle
+  template:
+    metadata:
+      labels:
+        app: factle
+    spec:
+      containers:
+        - name: factle-app
+          image: docker.io/kylesadler5/factle:1.0
+          ports:
+            - containerPort: 8080
+      imagePullSecrets:
+        - name: regcred
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: factle-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: factle
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: factle-ingress
+  annotations:
+    kubernetes.io/ingress.class: gce
+    networking.gke.io/managed-certificates: factle-xyz-cert
+    kubernetes.io/ingress.global-static-ip-name: factle-xyz
+spec:
+  rules:
+    - host: factle.xyz
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: factle-service
+                port:
+                  number: 80
