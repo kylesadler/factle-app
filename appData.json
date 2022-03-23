@@ -33,17 +33,6 @@
           "France",
           "Canada"
         ]
-      },
-      "config": {
-        "popup": {
-          "headerText": "A Test Popup",
-          "messageText": "This is something I want to say.",
-          "callToActionText": "Check this out",
-          "link": "https://twitter.com",
-          "buttonColor": "#6aaa64"
-        },
-        "bannerText": "A test banner. We support Ukraine.",
-        "statisticsPageText": "Here is something I want to say"
       }
     },
     {
