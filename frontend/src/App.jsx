@@ -3,7 +3,7 @@ import { Factle } from "./Factle";
 import MainPage from "./MainPage/MainPage";
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "./theme";
-import { getCentralTimeDate } from "../../util";
+import { getMMDDYYYY } from "../../util";
 
 export default () => {
   const [appData, setAppData] = useState({ problem: {}, config: {} });
@@ -18,7 +18,7 @@ export default () => {
 
   useEffect(async () => {
     const appData = require("../../appData.json");
-    const todaysDateString = getCentralTimeDate();
+    const todaysDateString = getMMDDYYYY();
 
     console.log("todaysDateString");
     console.log(todaysDateString);

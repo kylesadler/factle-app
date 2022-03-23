@@ -1,6 +1,6 @@
 #!/bin/bash 
 
-source ./config
+PORT=8080
 
 docker stop server &> /dev/null || true
 docker rm server &> /dev/null || true

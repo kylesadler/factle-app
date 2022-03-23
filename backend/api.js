@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express();
 const { getClient } = require("./database");
-const { getCentralTimeDate } = require("../util");
+const { getMMDDYYYY } = require("../util");
 
 const getLatestData = async () => {
   return {
@@ -89,7 +89,7 @@ router.get("/get-game-results", async (request, response) => {
     await client.connect();
     // prettier-ignore
     const pipeline = [
-      { $match: { date: getCentralTimeDate() } },
+      { $match: { date: getMMDDYYYY() } },
       { $replaceRoot: { newRoot: "$board" } },
     ];
     const db = await client.db("prod");

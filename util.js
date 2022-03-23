@@ -1,7 +1,6 @@
-exports.getCentralTimeDate = () => {
-  const centralTime = new Date(
-    new Date().getTime() + new Date().getTimezoneOffset() * 60000 + 3600000 * -6
-  );
+exports.getMMDDYYYY = () => {
+  const centralTime = new Date();
+  // new Date().getTime() + new Date().getTimezoneOffset() * 60000 + 3600000 * -6
 
   var dd = String(centralTime.getDate()).padStart(2, "0");
   var mm = String(centralTime.getMonth() + 1).padStart(2, "0"); //January is 0!
