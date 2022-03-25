@@ -11,7 +11,7 @@ export default ({ text, onClick, wrapperStyle, tileStyle, textStyle }) => {
         width: "20%",
         maxWidth: 100,
         boxSizing: "border-box",
-        height: useMediaQuery("(max-height:600px)") ? 40 : 55,
+        height: useMediaQuery("(max-height:700px)") ? 40 : 55,
         minHeight: 40,
         ...(wrapperStyle || {}),
       }}

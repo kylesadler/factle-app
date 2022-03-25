@@ -7,7 +7,15 @@ import HowToPlayModal from "./Modals/HowToPlayModal";
 import CustomModal from "./Modals/CustomModal";
 
 export default observer(
-  ({ game, prompt, options, bannerText, statisticsPageText, popup }) => {
+  ({
+    game,
+    prompt,
+    options,
+    bannerText,
+    statisticsPageText,
+    popup,
+    instagamLink,
+  }) => {
     // prompt is a string
     // options is array of { text, id } where ids 1-5 are correct answers in order
     const [helpOpen, setHelpOpen] = useState(false);
@@ -57,6 +65,7 @@ export default observer(
             setStatsOpen(false);
           }}
           statisticsPageText={statisticsPageText}
+          instagamLink={instagamLink}
         />
         <CustomModal
           open={customOpen}

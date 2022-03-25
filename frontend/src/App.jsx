@@ -42,7 +42,7 @@ export default () => {
   const {
     date = "",
     problem: { prompt = "", options = [...Array(23).map((i) => "")] },
-    config: { popup, bannerText, statisticsPageText },
+    config: { popup, bannerText, statisticsPageText, instagamLink },
   } = appData;
 
   const shuffledOptions = options
@@ -67,6 +67,7 @@ export default () => {
         bannerText={bannerText}
         statisticsPageText={statisticsPageText}
         popup={popup}
+        instagamLink={instagamLink}
       />
     </ThemeProvider>
   );

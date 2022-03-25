@@ -266,8 +266,8 @@ const EmojiCard = ({ game, prompt, rowPercentile, win }) => {
   );
 };
 
-const ButtonSection = ({ onClose }) => {
-  const wideScreen = useMediaQuery("(min-width:410px)");
+const ButtonSection = ({ onClose, instagamLink }) => {
+  const wideScreen = useMediaQuery("(min-width:440px)");
 
   return (
     // <React.Fragment>
@@ -278,7 +278,10 @@ const ButtonSection = ({ onClose }) => {
         style={{
           display: "flex",
           padding: "5px, 0px",
+          width: "100%",
           flexDirection: wideScreen ? "row" : "column",
+          justifyContent: "center",
+          alignItems: "center",
         }}
       >
         {/* <Button
@@ -290,7 +293,7 @@ const ButtonSection = ({ onClose }) => {
         >
           Twitter
         </Button>*/}
-        <SeeAnswerButton />
+        <SeeAnswerButton link={instagamLink} />
         <div style={{ width: 10, height: 10 }}></div>
         <FeedbackButton />
       </div>
@@ -298,7 +301,7 @@ const ButtonSection = ({ onClose }) => {
   );
 };
 
-const SeeAnswerButton = () => {
+const SeeAnswerButton = ({ link }) => {
   return (
     <IconButton
       label={"See Today's Answers"}
@@ -307,7 +310,7 @@ const SeeAnswerButton = () => {
         "-webkit-linear-gradient(left, rgb(238, 179, 90) 0%, rgb(224, 69, 106) 50%, rgb(148, 45, 178) 100%)"
       }
       onClick={() => {
-        window.open("https://www.instagram.com/factle.app/");
+        window.open(link || "https://www.instagram.com/factle.app/");
       }}
     />
   );
@@ -330,17 +333,21 @@ const IconButton = ({ label, icon, onClick, color }) => {
   return (
     <Button
       variant="contained"
-      style={{ background: color }}
+      style={{ background: color, width: 218, height: "100%" }}
       onClick={onClick}
       endIcon={icon}
     >
-      <Typography style={{ fontWeight: 600 }}>{label}</Typography>
+      <Typography style={{ fontWeight: 600, width: "100%" }}>
+        {label}
+      </Typography>
     </Button>
   );
 };
 
 export default observer(
-  ({ open, onClose, game, prompt, statisticsPageText }) => {
+  ({ open, onClose, game, prompt, statisticsPageText, instagamLink }) => {
+    const wideScreen = useMediaQuery("(min-width:640px)");
+
     // force state to update when Factle loads rowPercentile
     // TODO this is hacky
     const [p, setP] = useState(undefined);
@@ -414,9 +421,11 @@ export default observer(
             </div>
           </Centered>
         </SectionBlock>
-        <SectionBlock topBottomPadding="5px"></SectionBlock>
+
+        {wideScreen ? <SectionBlock topBottomPadding="10px" /> : ""}
+
         <SectionBlock topBottomPadding="15px">
-          <ButtonSection />
+          <ButtonSection instagamLink={instagamLink} />
         </SectionBlock>
       </Modal>
     );
