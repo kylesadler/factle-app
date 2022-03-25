@@ -13,3 +13,8 @@ exports.sendGameResults = (results) => {
   // console.log("sending game results", results);
   return postData("/api/send-game-results", results);
 };
+
+exports.getRowPercentiles = (results) => {
+  console.log("getting percentiles");
+  return postData("/api/get-row-precentiles", results);
+};
