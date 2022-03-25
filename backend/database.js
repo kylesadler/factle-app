@@ -35,8 +35,17 @@ const initDatabase = ({
 };
 
 exports.initDatabase = initDatabase;
-exports.getClient = () => {
-  return client;
+exports.getClient = async () => {
+  const tryAgain = (res) => {
+    if (client) {
+      res(client);
+    } else {
+      setTimeout(() => {
+        tryAgain(res);
+      }, 100);
+    }
+  };
+  return new Promise(tryAgain);
 };
 
 // async function run() {
