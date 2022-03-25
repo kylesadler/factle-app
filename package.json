@@ -4,7 +4,7 @@
   "description": "Factle app hosted on factle.app",
   "scripts": {
     "build": "npm run build--debug -- --no-source-maps",
-    "build--debug": "cd frontend && parcel build public/*.html public/*.jpg public/*.png --dist-dir dist --no-scope-hoist",
+    "build--debug": "cd frontend && parcel build public/*.html public/*.jpg public/*.jpeg public/*.png --dist-dir dist --no-scope-hoist",
     "start": "node server.js"
   },
   "repository": {

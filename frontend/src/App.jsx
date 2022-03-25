@@ -51,7 +51,7 @@ export default () => {
     })
     .sort(() => Math.random() - 0.5);
 
-  console.log("init", { options: shuffledOptions, isLoaded, date });
+  // console.log("init", { options: shuffledOptions, isLoaded, date });
   const game = new Factle({
     options: shuffledOptions,
     isLoaded,

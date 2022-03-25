@@ -48,6 +48,16 @@ export default observer(({ options, prompt, game }) => {
           await game.onEnter();
         }}
       />
+      <div style={{ display: "flex", flexDirection: "row-reverse" }}>
+        <img
+          onClick={() => {
+            window.open("https://twitter.com/pipedream_labs");
+          }}
+          style={{ height: 20, cursor: "pointer" }}
+          src="dropbyPD.jpeg"
+          alt="A drop by Pipedream Lab"
+        />
+      </div>
       <VerticlePadding />
     </div>
   );
