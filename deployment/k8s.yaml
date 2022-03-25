@@ -3,15 +3,6 @@
 # switch kubectl contexts with "kubectl use-context [gke cluster context]"
 ##
 
-# GKE managed TLS certificate
-apiVersion: networking.gke.io/v1beta2
-kind: ManagedCertificate
-metadata:
-  name: factle-xyz-cert
-spec:
-  domains:
-    - factle.xyz
----
 # Docker Hub login info
 apiVersion: v1
 data:
@@ -57,6 +48,16 @@ spec:
       port: 80
       targetPort: 8080
 ---
+# GKE managed TLS certificate
+apiVersion: networking.gke.io/v1beta2
+kind: ManagedCertificate
+metadata:
+  name: factle-xyz-cert
+spec:
+  domains:
+    - factle.xyz
+---
+# redirect http to https
 apiVersion: networking.gke.io/v1beta1
 kind: FrontendConfig
 metadata:

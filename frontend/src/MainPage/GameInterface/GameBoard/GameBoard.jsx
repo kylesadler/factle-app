@@ -59,8 +59,8 @@ export default observer(({ game }) => {
       })}
       {game.status == GAME_STATUS.LOST ? (
         <BoardTileRow>
-          {game.solution.map((text) => {
-            return <BoardTile text={text} color={Colors.GREEN} />;
+          {game.solution.map(({ text }) => {
+            return <BoardTile text={text} color={"rgb(66, 111, 194)"} />;
           })}
         </BoardTileRow>
       ) : (

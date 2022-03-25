@@ -239,8 +239,8 @@ export default observer(
 
     const { wonGames, totalGames } = getStatistics();
 
-    console.log("wonGames", "totalGames");
-    console.log(wonGames, totalGames);
+    // console.log("wonGames", "totalGames");
+    // console.log(wonGames, totalGames);
 
     return (
       <Modal open={open} onClose={onClose}>

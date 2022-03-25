@@ -26,13 +26,10 @@ const initDatabase = ({
         console.log("SSH connection error: " + error);
       }
 
-      client = new MongoClient(
+      _client = new MongoClient(
         `mongodb://localhost:${localPort}/${databaseName}`
       );
-      await client.connect();
-      await client.db("admin").command({ ping: 1 });
-      console.log("Connected successfully to server");
-      await client.close();
+      client = await _client.connect();
     }
   );
 };

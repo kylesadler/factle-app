@@ -64,10 +64,13 @@ const animateCSS = (
 // ids 1-5 are the answers
 
 class Factle {
-  constructor({ solution, onComplete, isLoaded, date }) {
-    // this.options = options; // array of 23 strings in order
-
-    this.solution = solution;
+  constructor({ options, onComplete, isLoaded, date }) {
+    this.solution = [...options]
+      .sort((a, b) => {
+        return a.id - b.id;
+      })
+      .slice(0, 5);
+    this.options = options; // array of { id, text }
     this.isLoaded = isLoaded;
     this.date = date;
 
@@ -183,43 +186,69 @@ class Factle {
       // at end of game
       let stats = getStatistics();
       stats.wonGames = stats.wonGames ? stats.wonGames : 0;
+      stats.totalGames = stats.totalGames ? stats.totalGames + 1 : 1;
 
       if (numCorrect == 5) {
         // console.log("win!");
         this.status = GAME_STATUS.WON;
         stats.wonGames++;
         stats.wonLastGame = true;
-
-        this.onComplete({ win: true });
-      } else if (this.row == 4) {
+      } else {
         // last row
         // console.log("game is over");
-        this.onComplete({ win: false });
         this.status = GAME_STATUS.LOST;
         stats.wonLastGame = false;
       }
 
+      this.onComplete({ win: stats.wonLastGame });
+
       stats.row = this.row + 1; //  to correct for adding 1 to row
-      stats.totalGames = stats.totalGames ? stats.totalGames + 1 : 1;
       const today = new Date(Date.now());
       stats.lastGameDate = today.toDateString();
       stats.lastGame = this.board;
       setStatistics(stats);
 
-      sendGameResults(this.getResults(), this.date);
+      sendGameResults({
+        date: this.date,
+        board: this.getResultsBoard(),
+        row: stats.wonLastGame ? this.row : this.row + 1,
+        win: stats.wonLastGame,
+        options: this.getGuessedOptions(),
+      });
     }
 
     this.row++;
     this.col = 0;
   };
 
-  getResults = () => {
+  getGuessedOptions = () => {
+    // assume ids of options are indeces
+
+    const output = {};
+
+    this.options.forEach(({ id }) => {
+      output[id] = false;
+    });
+
+    this.board.forEach((row) => {
+      row.forEach(({ id }) => {
+        if (!isNaN(id) && id != null) {
+          output[id] = true;
+        }
+      });
+    });
+
+    return output;
+  };
+
+  getResultsBoard = () => {
     const output = {};
 
     [...Array(5)].forEach((__, i) => {
       [...Array(5)].forEach((_, j) => {
         const key = `${i}${j}`; // zero indexed row, col
-        output[key] = this.board[i][j].status;
+        output[key] =
+          this.board[i][j].status == BOARD_TILE_STATUSES.CORRECT ? 1 : 0;
       });
     });
 

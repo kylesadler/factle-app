@@ -3,7 +3,7 @@ import { Factle } from "./Factle";
 import MainPage from "./MainPage/MainPage";
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "./theme";
-import { getMMDDYYYY } from "../../util";
+import { getLocalMMDDYYYY } from "../../util";
 
 export default () => {
   const [appData, setAppData] = useState({ problem: {}, config: {} });
@@ -18,15 +18,15 @@ export default () => {
 
   useEffect(async () => {
     const appData = require("../../appData.json");
-    const todaysDateString = getMMDDYYYY();
+    const todaysDateString = getLocalMMDDYYYY();
 
-    console.log("todaysDateString");
-    console.log(todaysDateString);
-    console.log(
-      appData.facles.filter(({ date }) => {
-        return date == todaysDateString;
-      })
-    );
+    // console.log("todaysDateString");
+    // console.log(todaysDateString);
+    // console.log(
+    //   appData.facles.filter(({ date }) => {
+    //     return date == todaysDateString;
+    //   })
+    // );
 
     // technically this is the factle and the app config
     const todaysFactle = appData.facles.filter(({ date }) => {
@@ -40,11 +40,8 @@ export default () => {
   }, []);
 
   const {
-    problem: {
-      prompt = "",
-      options = [...Array(23).map((i) => "")],
-      date = "",
-    },
+    date = "",
+    problem: { prompt = "", options = [...Array(23).map((i) => "")] },
     config: { popup, bannerText, statisticsPageText },
   } = appData;
 
@@ -54,8 +51,9 @@ export default () => {
     })
     .sort(() => Math.random() - 0.5);
 
+  console.log("init", { options: shuffledOptions, isLoaded, date });
   const game = new Factle({
-    solution: options.slice(0, 5),
+    options: shuffledOptions,
     isLoaded,
     date,
   });
