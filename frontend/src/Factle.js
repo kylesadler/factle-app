@@ -2,7 +2,7 @@ import { makeAutoObservable } from "mobx";
 import { getStatistics, setStatistics } from "./statistics";
 import Colors from "./Colors";
 import "animate.css";
-import { sendGameResults } from "./apiService";
+import { sendGameResults, getRowPercentiles } from "./apiService";
 
 const GAME_STATUS = {
   IN_PROGRESS: "in progress",
@@ -64,7 +64,13 @@ const animateCSS = (
 // ids 1-5 are the answers
 
 class Factle {
-  constructor({ options, onComplete, isLoaded, date }) {
+  constructor({
+    options,
+    onComplete,
+    isLoaded,
+    date,
+    onPercentileLoaded = () => {},
+  }) {
     this.solution = [...options]
       .sort((a, b) => {
         return a.id - b.id;
@@ -96,6 +102,7 @@ class Factle {
       this.isLoaded == false ? GAME_STATUS.LOADING : GAME_STATUS.IN_PROGRESS;
 
     this.onComplete = onComplete; // ({ win: bool }) => {}
+    this.onPercentileLoaded = onPercentileLoaded; // () => {}
 
     const today = new Date(Date.now());
     let { lastGame, lastGameDate, wonLastGame, row } = getStatistics();
@@ -184,14 +191,16 @@ class Factle {
 
     if (this.row == 4 || numCorrect == 5) {
       // at end of game
-      let stats = getStatistics();
-      stats.wonGames = stats.wonGames ? stats.wonGames : 0;
+      const stats = getStatistics();
       stats.totalGames = stats.totalGames ? stats.totalGames + 1 : 1;
+      stats.wonGames = stats.wonGames ? stats.wonGames : 0;
+      stats.currentStreak = stats.currentStreak ? stats.currentStreak : 0;
 
       if (numCorrect == 5) {
         // console.log("win!");
         this.status = GAME_STATUS.WON;
         stats.wonGames++;
+        stats.currentStreak++;
         stats.wonLastGame = true;
       } else {
         // last row
@@ -208,10 +217,16 @@ class Factle {
       stats.lastGame = this.board;
       setStatistics(stats);
 
+      // 0-4 for win, 5 for loss
+      const endingRow = stats.wonLastGame ? this.row : this.row + 1;
+
+      stats.rowPercentile = undefined;
+      this.updateRowPercentile(endingRow); // update rowPercentile async
+
       sendGameResults({
         date: this.date,
         board: this.getResultsBoard(),
-        row: stats.wonLastGame ? this.row : this.row + 1,
+        row: endingRow,
         win: stats.wonLastGame,
         options: this.getGuessedOptions(),
       });
@@ -219,6 +234,19 @@ class Factle {
 
     this.row++;
     this.col = 0;
+  };
+
+  updateRowPercentile = async (row) => {
+    const stats = getStatistics();
+    // array length 6
+    // percentiles[i] is percentile of ending game at row i
+    // i = 5 is for losing the game
+    const percentiles = await getRowPercentiles({ date: this.date });
+    stats.rowPercentile = percentiles[row];
+    // console.log("percentiles", percentiles);
+    // console.log("setting row percentile", stats.rowPercentile);
+    setStatistics(stats);
+    this.onPercentileLoaded ? this.onPercentileLoaded(stats) : "";
   };
 
   getGuessedOptions = () => {

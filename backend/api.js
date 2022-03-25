@@ -14,7 +14,7 @@ const getBodyData = (request) => {
 };
 
 const getCollection = async (client, name) => {
-  console.log("getting collection", name);
+  // console.log("getting collection", name);
   const db = await client.db("prod");
   return db.collection(name);
 };
@@ -23,8 +23,8 @@ router.post("/send-game-results", async (request, response) => {
   const { board, date, row, win, options } = getBodyData(request);
 
   if ([board, date, row, win, options].every((x) => x != undefined)) {
-    console.log("received game results");
-    console.log(board, date, row, win, options);
+    // console.log("received game results");
+    // console.log(board, date, row, win, options);
     const client = await getClient();
     try {
       // await client.connect();
@@ -203,7 +203,7 @@ router.get("/get-game-results", authenticate, async (request, response) => {
     const todayResults = await getGameStatsByDate(client, today);
     const tomorrowResults = await getGameStatsByDate(client, tommorow);
     const results = { todayResults, tomorrowResults };
-    console.log("got results", results);
+    // console.log("got results", results);
     response.json(results);
   } catch (error) {
     console.log(error);
@@ -262,6 +262,11 @@ setInterval(updateRowPercentiles, PERCENTILE_UPDATE_MS);
 
 router.post("/get-row-precentiles", async (request, response) => {
   const { date } = getBodyData(request); // date is MM/DD/YYYY datestring
+
+  // for testing
+  // await new Promise((res) => {
+  //   setTimeout(res, 5000);
+  // });
 
   if (!rowPercentiles || !rowPercentiles[date]) {
     await updateRowPercentiles(date);

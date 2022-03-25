@@ -15,6 +15,6 @@ exports.sendGameResults = (results) => {
 };
 
 exports.getRowPercentiles = (results) => {
-  console.log("getting percentiles");
+  // console.log("getting percentiles");
   return postData("/api/get-row-precentiles", results);
 };

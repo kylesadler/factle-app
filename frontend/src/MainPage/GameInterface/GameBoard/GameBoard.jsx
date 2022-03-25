@@ -35,9 +35,9 @@ statusToColor[BOARD_TILE_STATUSES.CORRECT] = Colors.GREEN;
 statusToColor[BOARD_TILE_STATUSES.PRESENT] = Colors.YELLOW;
 statusToColor[BOARD_TILE_STATUSES.NOT_PRESENT] = Colors.DARK_GRAY;
 export default observer(({ game }) => {
-  //   console.log("board", game.board);
-  //   console.log("row, col", game.row, game.col);
-  //   console.log("solution", game.solution);
+  // console.log("board", game.board);
+  // console.log("row, col", game.row, game.col);
+  // console.log("solution", game.solution);
   return (
     <div>
       <RankingBlock />
