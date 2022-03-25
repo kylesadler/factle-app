@@ -13,7 +13,7 @@ const dateToMMDDYYYY = (currentTime) => {
 };
 exports.dateToMMDDYYYY = dateToMMDDYYYY;
 
-exports.getCentralTime = () => {
+const getCentralTime = () => {
   const currentTime = new Date();
   return new Date(
     currentTime.getTime() +
@@ -21,6 +21,7 @@ exports.getCentralTime = () => {
       3600000 * -6
   );
 };
+exports.getCentralTime = getCentralTime;
 
 exports.getCentralTimeMMDDYYYY = () => {
   const centralTime = getCentralTime();
