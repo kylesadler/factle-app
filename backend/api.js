@@ -1,7 +1,13 @@
 const express = require("express");
 const router = express();
 const { getClient } = require("./database");
-const { dateToMMDDYYYY, getCentralTime } = require("../util");
+const {
+  dateToMMDDYYYY,
+  getCentralTime,
+  getCentralTimeMMDDYYYY,
+} = require("../util");
+
+const PERCENTILE_UPDATE_MS = 10 * 60 * 1000;
 
 const getBodyData = (request) => {
   return request?.body ? request.body : {};
@@ -19,7 +25,7 @@ router.post("/send-game-results", async (request, response) => {
   if ([board, date, row, win, options].every((x) => x != undefined)) {
     console.log("received game results");
     console.log(board, date, row, win, options);
-    const client = getClient();
+    const client = await getClient();
     try {
       // await client.connect();
       const collection = await getCollection(
@@ -191,30 +197,77 @@ router.get("/get-game-results", authenticate, async (request, response) => {
   const tommorow = new Date(today);
   tommorow.setDate(today.getDate() + 1);
 
-  const client = getClient();
+  const client = await getClient();
 
-  const tryAgain = (resolve, reject) => {
-    // console.log("client", client);
-    if (!client) {
-      setTimeout(() => {
-        tryAgain(resolve, reject);
-      });
-    } else {
-      resolve();
-    }
-  };
-
-  await new Promise(tryAgain);
-
-  // console.log("client", client);
   try {
-    // await client.connect();
     const todayResults = await getGameStatsByDate(client, today);
     const tomorrowResults = await getGameStatsByDate(client, tommorow);
     const results = { todayResults, tomorrowResults };
     console.log("got results", results);
     response.json(results);
-  } finally {
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+const getRowPercentiles = async (collection) => {
+  const rowResults = {};
+
+  [...Array(6)].forEach((_, x) => {
+    rowResults["row" + x] = CountBooleans({
+      $eq: ["$row", x],
+    });
+  });
+
+  const results = await getPipelineResults(collection, [
+    {
+      $group: {
+        _id: null,
+        totalGames: { $sum: 1 },
+        ...rowResults,
+      },
+    },
+  ]);
+
+  if (results.length == 0) {
+    return {};
+  } else {
+    const { totalGames } = results[0];
+    let currentTotal = 0;
+    // technically this an object and we're using integer keys
+    const output = filterPrefix(results[0], "row");
+    for (let i = 0; i < 6; i++) {
+      currentTotal += output[i];
+      output[i] = currentTotal / totalGames;
+    }
+    return output;
+  }
+};
+
+// { "MM/DD/YYYY": [] array length 6 }
+// percentiles[i] is percentile of ending game at row i
+// i = 5 is for losing the game
+var rowPercentiles = {};
+
+const updateRowPercentiles = async (inputDate) => {
+  const date = inputDate || getCentralTimeMMDDYYYY();
+  const client = await getClient();
+  const collection = await getCollection(client, dateStringToCollection(date));
+  rowPercentiles[date] = await getRowPercentiles(collection);
+  console.log(`Updating percentiles for ${date}:`, rowPercentiles[date]);
+};
+
+updateRowPercentiles();
+setInterval(updateRowPercentiles, PERCENTILE_UPDATE_MS);
+
+router.post("/get-row-precentiles", async (request, response) => {
+  const { date } = getBodyData(request); // date is MM/DD/YYYY datestring
+
+  if (!rowPercentiles || !rowPercentiles[date]) {
+    await updateRowPercentiles(date);
+    response.json(rowPercentiles[date]);
+  } else {
+    response.json(rowPercentiles[date]);
   }
 });
 
