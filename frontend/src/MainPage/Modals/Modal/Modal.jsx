@@ -20,7 +20,12 @@ export default ({ open, onClose, children }) => {
     >
       <Fade in={open}>
         <div
-          style={{ height: "100vh", width: "100vw", display: "flex" }}
+          style={{
+            height: "100vh",
+            width: "100vw",
+            display: "flex",
+            overflow: "scroll",
+          }}
           onClick={(event) => {
             if (event.target == event.currentTarget) onClose(event);
           }}
