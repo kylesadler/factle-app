@@ -18,7 +18,7 @@ console.log(`             ________________________________________________
             /                                                \\
            |    _________________________________________     |
            |   |                                         |    |
-           |   |  C:\\> Welcome to factle!                |    |
+           |   |  C:\\> Welcome to Factle!                |    |
            |   |                                         |    |
            |   |     > Interested in running Factle?     |    |
            |   |     > Email garrett@pipedreamlabs.co    |    |
