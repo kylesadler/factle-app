@@ -29,7 +29,7 @@ spec:
     spec:
       containers:
         - name: factle-app
-          image: docker.io/kylesadler5/factle:1.5
+          image: docker.io/kylesadler5/factle:1.4
           ports:
             - containerPort: 8080
       imagePullSecrets:
@@ -39,8 +39,6 @@ apiVersion: v1
 kind: Service
 metadata:
   name: factle-service
-  annotations:
-    networking.gke.io/load-balancer-type: "Internal"
 spec:
   type: LoadBalancer
   selector:
@@ -51,8 +49,7 @@ spec:
       targetPort: 8080
 ---
 # GKE managed TLS certificate
-# TODO change this
-apiVersion: networking.gke.io/v1
+apiVersion: networking.gke.io/v1beta2
 kind: ManagedCertificate
 metadata:
   name: factle-xyz-cert
@@ -75,17 +72,19 @@ metadata:
   name: factle-ingress
   annotations:
     kubernetes.io/ingress.class: gce
-
-    # TODO change this
     networking.gke.io/managed-certificates: factle-xyz-cert
     kubernetes.io/ingress.global-static-ip-name: factle-xyz
-
-    # enable these after managed certificate is active
-    # networking.gke.io/v1beta1.FrontendConfig: ssl-redirect
-    # kubernetes.io/ingress.allow-http: "false"
+    networking.gke.io/v1beta1.FrontendConfig: ssl-redirect
+    kubernetes.io/ingress.allow-http: "true"
 spec:
-  defaultBackend:
-    service:
-      name: factle-service
-      port:
-        number: 80
+  rules:
+    - host: factle.xyz
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: factle-service
+                port:
+                  number: 80
