@@ -28,6 +28,7 @@ export default () => {
   useEffect(async () => {
     const appData = require("../../appData.json");
     const todaysDateString = getLocalMMDDYYYY();
+    // const todaysDateString = "03/26/2022";
 
     // console.log("todaysDateString");
     // console.log(todaysDateString);

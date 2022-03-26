@@ -188,8 +188,8 @@ const getGameStatsByDate = async (client, date) => {
   return getGameStats(collection);
 };
 
-router.get("/get-game-results", authenticate, async (request, response) => {
-  // router.get("/get-game-results", async (request, response) => {
+// router.get("/get-game-results", authenticate, async (request, response) => {
+router.get("/get-game-results", async (request, response) => {
   // there are always two active questions due to timezones
   // https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
   // next day's game starts being played at ~6am CST

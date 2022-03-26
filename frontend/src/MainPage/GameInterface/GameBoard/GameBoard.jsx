@@ -42,7 +42,7 @@ export default observer(({ game, facts = [] }) => {
     ...(game?.solution || []).map(({ text }) => (text + "").length)
   );
 
-  console.log("longestSolution", longestSolution);
+  // console.log("longestSolution", longestSolution);
 
   return (
     <div>

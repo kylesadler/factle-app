@@ -29,7 +29,7 @@ spec:
     spec:
       containers:
         - name: factle-app
-          image: docker.io/kylesadler5/factle:1.2
+          image: docker.io/kylesadler5/factle:1.4
           ports:
             - containerPort: 8080
       imagePullSecrets:
