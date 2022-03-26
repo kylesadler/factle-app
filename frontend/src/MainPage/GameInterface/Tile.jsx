@@ -39,7 +39,7 @@ export default ({ text, onClick, wrapperStyle, tileStyle, textStyle }) => {
             // width: "90%",
             lineHeight: 1,
             color: Colors.WHITE,
-            fontSize: useMediaQuery("(max-width:522px)") ? "0.8rem" : "1rem",
+            fontSize: useMediaQuery("(max-width:522px)") ? "12px" : "1rem",
             fontWeight: 600,
             ...(textStyle || {}),
           }}
