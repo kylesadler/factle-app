@@ -34,7 +34,7 @@ const statusToColor = {};
 statusToColor[BOARD_TILE_STATUSES.CORRECT] = Colors.GREEN;
 statusToColor[BOARD_TILE_STATUSES.PRESENT] = Colors.YELLOW;
 statusToColor[BOARD_TILE_STATUSES.NOT_PRESENT] = Colors.DARK_GRAY;
-export default observer(({ game }) => {
+export default observer(({ game, facts = [] }) => {
   // console.log("board", game.board);
   // console.log("row, col", game.row, game.col);
   // console.log("solution", game.solution);
@@ -57,10 +57,16 @@ export default observer(({ game }) => {
           </BoardTileRow>
         );
       })}
-      {game.status == GAME_STATUS.LOST ? (
+      {game.status == GAME_STATUS.LOST || game.status == GAME_STATUS.WON ? (
         <BoardTileRow>
-          {game.solution.map(({ text }) => {
-            return <BoardTile text={text} color={"rgb(66, 111, 194)"} />;
+          {game.solution.map(({ text }, i) => {
+            return (
+              <BoardTile
+                text={text}
+                data={facts[i]}
+                color={"rgb(66, 111, 194)"}
+              />
+            );
           })}
         </BoardTileRow>
       ) : (

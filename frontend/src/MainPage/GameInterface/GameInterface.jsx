@@ -5,7 +5,7 @@ import GameBoard from "./GameBoard/GameBoard";
 import Keyboard from "./Keyboard/Keyboard";
 import { Link } from "@mui/material";
 
-const PromptBlock = ({ prompt, sourceText, sourceLink, facts }) => {
+const PromptBlock = ({ prompt, sourceText, sourceLink }) => {
   return (
     <div>
       <div style={{ margin: "auto", textAlign: "center", padding: "25px 0px" }}>
@@ -55,7 +55,7 @@ export default observer(
           sourceLink={sourceLink}
           facts={facts}
         />
-        <GameBoard game={game} />
+        <GameBoard game={game} facts={facts} />
         <VerticlePadding />
         <Keyboard
           options={options}

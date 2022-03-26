@@ -3,7 +3,15 @@ import Typography from "@mui/material/Typography";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Colors from "../../Colors";
 
-export default ({ text, onClick, wrapperStyle, tileStyle, textStyle }) => {
+export default ({
+  text,
+  onClick,
+  wrapperStyle,
+  tileStyle,
+  textStyle,
+  data,
+}) => {
+  // data is statistic displayed under the text
   return (
     // tile spacer div
     <div
@@ -47,6 +55,25 @@ export default ({ text, onClick, wrapperStyle, tileStyle, textStyle }) => {
         >
           {text || ""}
         </Typography>
+
+        {data ? (
+          <Typography
+            style={{
+              textAlign: "center",
+              // width: "90%",
+              lineHeight: 1,
+              color: Colors.WHITE,
+              fontSize: "12px",
+              fontWeight: 600,
+              // ...(textStyle || {}),
+            }}
+            variant="body1"
+          >
+            {data}
+          </Typography>
+        ) : (
+          ""
+        )}
       </div>
     </div>
   );
