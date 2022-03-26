@@ -38,6 +38,12 @@ export default observer(({ game, facts = [] }) => {
   // console.log("board", game.board);
   // console.log("row, col", game.row, game.col);
   // console.log("solution", game.solution);
+  const longestSolution = Math.max(
+    ...(game?.solution || []).map(({ text }) => (text + "").length)
+  );
+
+  console.log("longestSolution", longestSolution);
+
   return (
     <div>
       <RankingBlock />
@@ -58,14 +64,14 @@ export default observer(({ game, facts = [] }) => {
         );
       })}
       {game.status == GAME_STATUS.LOST || game.status == GAME_STATUS.WON ? (
-        <BoardTileRow style={{ alignItems: "center" }}>
+        <BoardTileRow>
           {game.solution.map(({ text }, i) => {
             return (
               <BoardTile
                 text={text}
                 data={facts[i]}
                 color={"rgb(66, 111, 194)"}
-                wrapperStyle={{ height: 70 }}
+                wrapperStyle={{ height: longestSolution > 30 ? 80 : 70 }}
               />
             );
           })}

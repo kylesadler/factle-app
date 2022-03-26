@@ -12,6 +12,32 @@ export default ({
   data,
 }) => {
   // data is statistic displayed under the text
+
+  const longestWordLength = Math.max(
+    ...text.split(" ").map((word) => word.length)
+  );
+  const longText = longestWordLength > 11 || text.length > 25;
+
+  // console.log("longText", text, longText);
+  // console.log("longestWordLength", text, text.split(" "), longestWordLength);
+
+  const smallScreen = useMediaQuery("(max-width:522px)");
+
+  var fontSize;
+  if (longText) {
+    if (smallScreen) {
+      fontSize = "11px";
+    } else {
+      fontSize = "12px";
+    }
+  } else {
+    if (smallScreen) {
+      fontSize = "0.8rem";
+    } else {
+      fontSize = "1rem";
+    }
+  }
+
   return (
     // tile spacer div
     <div
@@ -47,7 +73,7 @@ export default ({
             // width: "90%",
             lineHeight: 1,
             color: Colors.WHITE,
-            fontSize: useMediaQuery("(max-width:522px)") ? "12px" : "1rem",
+            fontSize,
             fontWeight: 600,
             ...(textStyle || {}),
           }}

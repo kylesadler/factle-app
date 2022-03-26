@@ -16,7 +16,7 @@ export default ({ text = "", onClick, styles = {}, textStyle = {} }) => {
   const longestWordLength = Math.max(
     ...text.split(" ").map((word) => word.length)
   );
-  const longText = longestWordLength > 11 || text.length > 30;
+  const longText = longestWordLength > 11 || text.length > 25;
 
   // console.log("longText", text, longText);
   // console.log("longestWordLength", text, text.split(" "), longestWordLength);
