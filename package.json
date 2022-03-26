@@ -25,6 +25,7 @@
     "@parcel/packager-raw-url": "^2.3.1",
     "@parcel/transformer-webmanifest": "^2.3.1",
     "animate.css": "^4.1.1",
+    "compression": "^1.7.4",
     "express": "^4.17.2",
     "mobx": "^6.4.2",
     "mobx-react-lite": "^3.3.0",
@@ -32,6 +33,7 @@
     "parcel": "^2.2.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-ga": "^3.3.0",
     "tunnel-ssh": "^4.1.6"
   }
 }
