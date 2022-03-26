@@ -7,7 +7,7 @@ import theme from "./theme";
 import { getLocalMMDDYYYY } from "../../util";
 import { isLocalhost } from "./util";
 
-GOOGLE_ANALYTICS_TAG = undefined;
+GOOGLE_ANALYTICS_TAG = "UA-159417143-3";
 
 if (!isLocalhost() && GOOGLE_ANALYTICS_TAG) {
   ReactGA.initialize(GOOGLE_ANALYTICS_TAG);
