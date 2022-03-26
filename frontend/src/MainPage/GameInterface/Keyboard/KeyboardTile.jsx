@@ -12,7 +12,11 @@ const ColorButton = styled(Button)(({ theme }) => ({
   },
 }));
 
-export default ({ text, onClick, styles = {}, textStyle = {} }) => {
+export default ({ text = "", onClick, styles = {}, textStyle = {} }) => {
+  const longestWordLength = Math.max(
+    ...text.split(" ").map((word) => word.length)
+  );
+  // console.log("longestWordLength", text, text.split(" "), longestWordLength);
   return (
     <div
       style={{
@@ -51,7 +55,11 @@ export default ({ text, onClick, styles = {}, textStyle = {} }) => {
             // width: "90%",
             color: Colors.WHITE,
             fontWeight: 600,
-            fontSize: useMediaQuery("(max-width:522px)") ? "0.7rem" : "0.8rem",
+            fontSize: useMediaQuery("(max-width:522px)")
+              ? longestWordLength < 11
+                ? "12px"
+                : "0.7rem"
+              : "0.8rem",
             lineHeight: 1,
             ...(styles.backgroundColor == Colors.DARK_GRAY
               ? { color: Colors.INCORRECT_GRAY }
