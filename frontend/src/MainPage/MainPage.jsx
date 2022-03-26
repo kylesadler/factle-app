@@ -15,6 +15,9 @@ export default observer(
     statisticsPageText,
     popup,
     instagamLink,
+    sourceText,
+    sourceLink,
+    facts,
   }) => {
     // prompt is a string
     // options is array of { text, id } where ids 1-5 are correct answers in order
@@ -48,7 +51,14 @@ export default observer(
           }}
           bannerText={bannerText}
         />
-        <GameInterface options={options} prompt={prompt} game={game} />
+        <GameInterface
+          options={options}
+          prompt={prompt}
+          game={game}
+          sourceText={sourceText}
+          sourceLink={sourceLink}
+          facts={facts}
+        />
         <HowToPlayModal
           open={helpOpen}
           onClose={() => {

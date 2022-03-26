@@ -7,7 +7,7 @@ import theme from "./theme";
 import { getLocalMMDDYYYY } from "../../util";
 import { isLocalhost } from "./util";
 
-GOOGLE_ANALYTICS_TAG = "UA-159417143-3";
+const GOOGLE_ANALYTICS_TAG = "UA-159417143-3";
 
 if (!isLocalhost() && GOOGLE_ANALYTICS_TAG) {
   ReactGA.initialize(GOOGLE_ANALYTICS_TAG);
@@ -38,19 +38,26 @@ export default () => {
     // );
 
     // technically this is the factle and the app config
-    const todaysFactle = appData.facles.filter(({ date }) => {
-      return date == todaysDateString;
-    })[0];
+    const todaysFactle =
+      appData.facles.filter(({ date }) => {
+        return date == todaysDateString;
+      })[0] || {};
 
-    todaysFactle.problem = todaysFactle.problem || {};
-    todaysFactle.config = todaysFactle.config || {};
+    todaysFactle.problem = todaysFactle?.problem || {};
+    todaysFactle.config = todaysFactle?.config || {};
     setAppData(todaysFactle);
     setIsLoaded(true);
   }, []);
 
   const {
     date = "",
-    problem: { prompt = "", options = [...Array(23).map((i) => "")] },
+    problem: {
+      prompt = "",
+      options = [...Array(23).map((i) => "")],
+      sourceText,
+      sourceLink,
+      facts = [],
+    },
     config: { popup, bannerText, statisticsPageText, instagamLink },
   } = appData;
 
@@ -72,6 +79,9 @@ export default () => {
       <MainPage
         game={game}
         prompt={prompt}
+        sourceText={sourceText}
+        sourceLink={sourceLink}
+        facts={facts}
         options={shuffledOptions}
         bannerText={bannerText}
         statisticsPageText={statisticsPageText}
