@@ -3,38 +3,39 @@
     // add new objects to the factles array
     // to queue factles in the future
     {
-      "date": "03/09/2022", // this functions as the question's ID
+      "date": "03/23/22", // this functions as the question's ID
       "problem": {
-        "prompt": "Top 5 Countries by GDP (2021)",
+        "prompt": "Oldest Countries in the World (by date of self-sovereignty)",
+        "sourceText": "World Atlas",
+        "sourceLink": "https://worldpopulationreview.com/country-rankings/oldest-countries",
         "options": [
-          "United States",
-          "China",
           "Japan",
-          "Germany",
-          "United Kingdom",
-
-          "Mexico",
-          "Egypt",
-          "Brazil",
+          "China",
+          "France",
+          "Austria",
+          "Denmark",
+          "Hungry",
           "Portugal",
-          "South Africa",
-
-          "Australia",
-          "Spain",
-          "Switzerland",
-          "Norway",
-          "Iraq",
-
-          "New Zealand",
-          "South Korea",
-          "Italy",
+          "Mongolia",
+          "Thailand",
+          "Austrailia",
+          "United Kingdom",
           "Poland",
           "Russia",
-
           "India",
-          "France",
+          "New Zealand",
+          "Estonia",
+          "Norway",
+          "United States",
+          "Brazil",
+          "Mexico",
+          "Italy",
+          "Sweden",
           "Canada"
-        ]
+        ],
+
+        // these are the answers shown at the end of the game
+        "facts": ["660 BC", "221 BC", "843 AD", "976 AD", "1000 AD"]
       },
       "config": {
         "popup": {
