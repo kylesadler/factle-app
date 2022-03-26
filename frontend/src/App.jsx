@@ -1,9 +1,18 @@
 import React, { useState, useEffect, useRef } from "react";
+import ReactGA from "react-ga";
 import { Factle } from "./Factle";
 import MainPage from "./MainPage/MainPage";
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "./theme";
 import { getLocalMMDDYYYY } from "../../util";
+import { isLocalhost } from "./util";
+
+GOOGLE_ANALYTICS_TAG = undefined;
+
+if (!isLocalhost() && GOOGLE_ANALYTICS_TAG) {
+  ReactGA.initialize(GOOGLE_ANALYTICS_TAG);
+  ReactGA.pageview(window.location.pathname + window.location.search);
+}
 
 export default () => {
   const [appData, setAppData] = useState({ problem: {}, config: {} });
