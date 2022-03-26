@@ -323,7 +323,7 @@ const FeedbackButton = () => {
       icon={<CampaignOutlinedIcon />}
       color={Colors.GREEN}
       onClick={() => {
-        window.open("https://www.instagram.com/factle.app/");
+        window.open("https://forms.gle/iMp2ksRaYYSgjVez8");
       }}
     />
   );
