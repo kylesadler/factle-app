@@ -36,9 +36,11 @@ router.post("/send-game-results", async (request, response) => {
     } catch (e) {
       console.log("error when storing results");
       console.log(e);
+      response.json({ error: true });
     } finally {
       // Ensures that the client will close when you finish/error
       // await client.close();
+      response.json({ success: true });
     }
   }
 });

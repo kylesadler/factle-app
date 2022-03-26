@@ -8,7 +8,8 @@ const { initDatabase } = require("./backend/database");
 const fs = require("fs");
 
 initDatabase({
-  host: "96.30.198.238",
+  // host: "96.30.198.238",
+  host: "155.138.226.124",
   username: "mongotunnel",
   // privateKey: fs.readFileSync("/Users/kyle/.ssh/id_rsa"),
   privateKey: fs.readFileSync("./ssh/id_rsa"),
