@@ -16,7 +16,33 @@ export default ({ text = "", onClick, styles = {}, textStyle = {} }) => {
   const longestWordLength = Math.max(
     ...text.split(" ").map((word) => word.length)
   );
+  const longText = longestWordLength > 11 || text.length > 30;
+
+  // console.log("longText", text, longText);
   // console.log("longestWordLength", text, text.split(" "), longestWordLength);
+
+  const smallScreen = useMediaQuery("(max-width:522px)");
+
+  var fontSize;
+  var padding;
+  if (longText) {
+    if (smallScreen) {
+      fontSize = "11px";
+      padding = 0;
+    } else {
+      fontSize = "12px";
+      padding = 5;
+    }
+  } else {
+    if (smallScreen) {
+      fontSize = "0.7rem";
+      padding = 5;
+    } else {
+      fontSize = "0.8rem";
+      padding = "5px 10px";
+    }
+  }
+
   return (
     <div
       style={{
@@ -44,6 +70,8 @@ export default ({ text = "", onClick, styles = {}, textStyle = {} }) => {
           // add padding here
           borderRadius: 4,
           // backgroundColor: Colors.LIGHT_GRAY,
+
+          padding,
           ...styles,
         }}
         onClick={onClick}
@@ -55,11 +83,7 @@ export default ({ text = "", onClick, styles = {}, textStyle = {} }) => {
             // width: "90%",
             color: Colors.WHITE,
             fontWeight: 600,
-            fontSize: useMediaQuery("(max-width:522px)")
-              ? longestWordLength < 11
-                ? "12px"
-                : "0.7rem"
-              : "0.8rem",
+            fontSize,
             lineHeight: 1,
             ...(styles.backgroundColor == Colors.DARK_GRAY
               ? { color: Colors.INCORRECT_GRAY }

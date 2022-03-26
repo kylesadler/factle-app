@@ -8,6 +8,7 @@
         "prompt": "Oldest Countries in the World (by date of self-sovereignty)",
         "sourceText": "World Atlas",
         "sourceLink": "https://worldpopulationreview.com/country-rankings/oldest-countries",
+        // try to keep each option under 30 characters long and under 11 character words
         "options": [
           "Japan",
           "China",

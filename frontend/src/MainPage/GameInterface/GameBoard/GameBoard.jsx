@@ -58,13 +58,14 @@ export default observer(({ game, facts = [] }) => {
         );
       })}
       {game.status == GAME_STATUS.LOST || game.status == GAME_STATUS.WON ? (
-        <BoardTileRow>
+        <BoardTileRow style={{ alignItems: "center" }}>
           {game.solution.map(({ text }, i) => {
             return (
               <BoardTile
                 text={text}
                 data={facts[i]}
                 color={"rgb(66, 111, 194)"}
+                wrapperStyle={{ height: 70 }}
               />
             );
           })}

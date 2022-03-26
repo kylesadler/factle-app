@@ -4,7 +4,7 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import Colors from "../../Colors";
 
 export default ({
-  text,
+  text = "",
   onClick,
   wrapperStyle,
   tileStyle,
@@ -53,7 +53,7 @@ export default ({
           }}
           variant="body1"
         >
-          {text || ""}
+          {text}
         </Typography>
 
         {data ? (

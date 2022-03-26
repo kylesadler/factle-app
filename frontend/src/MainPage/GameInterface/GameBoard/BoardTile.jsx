@@ -2,12 +2,12 @@ import React from "react";
 import Tile from "../Tile";
 import Colors from "../../../Colors";
 
-export default ({ text, color, borderColor, data }) => {
+export default ({ text, color, borderColor, data, wrapperStyle }) => {
   return (
     <Tile
       text={text}
       data={data}
-      wrapperStyle={{ padding: "0px 3px" }}
+      wrapperStyle={{ padding: "0px 3px", ...(wrapperStyle || {}) }}
       textStyle={data ? { fontSize: "12px" } : undefined}
       tileStyle={{
         border: "2px solid " + Colors.DARK_GRAY,
