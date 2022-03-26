@@ -62,6 +62,7 @@ export default ({
           alignItems: "center",
 
           // add padding here
+          padding: 1,
           ...(tileStyle || {}),
         }}
         onClick={onClick}
