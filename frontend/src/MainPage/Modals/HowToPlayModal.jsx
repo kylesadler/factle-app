@@ -75,7 +75,7 @@ export default ({ open, onClose }) => {
           A new Factle will be available everyday!
         </Typography>
         <Typography variant="body1" gutterBottom>
-          Based on Jonathon Wardle's game, Wordle.
+          Based on Josh Wardle's game, Wordle.
         </Typography>
       </div>
       <div style={{ width: "100%", padding: "9px 0px" }}>
