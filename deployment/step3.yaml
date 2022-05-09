@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: factle-ingress
+  annotations:
+    kubernetes.io/ingress.class: gce
+    kubernetes.io/ingress.global-static-ip-name: factle-xyz
+
+    networking.gke.io/managed-certificates: factle-app-cert
+    # networking.gke.io/managed-certificates: factle-xyz-cert
+
+    networking.gke.io/v1beta1.FrontendConfig: ssl-redirect
+    kubernetes.io/ingress.allow-http: "false"
+spec:
+  defaultBackend:
+    service:
+      name: factle-service
+      port:
+        number: 80

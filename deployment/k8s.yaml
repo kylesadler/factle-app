@@ -50,8 +50,7 @@ spec:
       port: 80
       targetPort: 8080
 ---
-# redirect http to https
-# (not always enabled)
+# redirect http to https (not always enabled)
 apiVersion: networking.gke.io/v1beta1
 kind: FrontendConfig
 metadata:
@@ -67,7 +66,7 @@ spec:
 # delete old certificate by
 #   gcloud compute ssl-certificates list
 #   gcloud compute ssl-certificates delete [name]
-
+---
 # GKE managed TLS certificate
 apiVersion: networking.gke.io/v1
 kind: ManagedCertificate
@@ -100,3 +99,6 @@ spec:
       name: factle-service
       port:
         number: 80
+# deploy without managed certificate
+# redirect DNS
+# then uncomment managed certificates

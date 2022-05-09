@@ -1,0 +1,27 @@
+# GKE managed TLS certificate
+apiVersion: networking.gke.io/v1
+kind: ManagedCertificate
+metadata:
+  name: factle-app-cert
+  # name: factle-xyz-cert
+spec:
+  domains:
+    - factle.app
+    # - factle.xyz
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: factle-ingress
+  annotations:
+    kubernetes.io/ingress.class: gce
+    kubernetes.io/ingress.global-static-ip-name: factle-xyz
+
+    networking.gke.io/managed-certificates: factle-app-cert
+    # networking.gke.io/managed-certificates: factle-xyz-cert
+spec:
+  defaultBackend:
+    service:
+      name: factle-service
+      port:
+        number: 80
