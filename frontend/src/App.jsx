@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import ReactGA from "react-ga";
 import { Factle } from "./Factle";
 import MainPage from "./MainPage/MainPage";
@@ -58,17 +58,7 @@ export default () => {
   useEffect(async () => {
     const appData = require("../../appData.json");
     const todaysDateString = getLocalMMDDYYYY();
-    // const todaysDateString = "03/26/2022";
 
-    // console.log("todaysDateString");
-    // console.log(todaysDateString);
-    // console.log(
-    //   appData.facles.filter(({ date }) => {
-    //     return date == todaysDateString;
-    //   })
-    // );
-
-    // technically this is the factle and the app config
     const todaysFactle =
       appData.facles.filter(({ date }) => {
         return date == todaysDateString;
@@ -98,7 +88,6 @@ export default () => {
     })
     .sort(() => Math.random() - 0.5);
 
-  // console.log("init", { options: shuffledOptions, isLoaded, date });
   const game = new Factle({
     options: shuffledOptions,
     isLoaded,

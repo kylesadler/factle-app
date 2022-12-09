@@ -5,9 +5,9 @@ exports.getLocalMMDDYYYY = () => {
 const dateToMMDDYYYY = (currentTime) => {
   // "03/09/2022", for example
   // currentTime is Date object
-  var dd = String(currentTime.getDate()).padStart(2, "0");
-  var mm = String(currentTime.getMonth() + 1).padStart(2, "0"); //January is 0!
-  var yyyy = currentTime.getFullYear();
+  const dd = String(currentTime.getDate()).padStart(2, "0");
+  const mm = String(currentTime.getMonth() + 1).padStart(2, "0"); //January is 0!
+  const yyyy = currentTime.getFullYear();
 
   return `${mm}/${dd}/${yyyy}`;
 };

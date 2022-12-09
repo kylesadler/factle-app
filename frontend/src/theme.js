@@ -2,7 +2,6 @@ import { createTheme, responsiveFontSizes } from "@mui/material/styles";
 
 let theme = createTheme({
   typography: {
-    // fontFamily: "Hepta Slab", // needs to be bold
     fontFamily:
       "nyt-karnakcondensed, HelveticaNeue-Light, Helvetica Neue Light, Helvetica Neue, Helvetica, Arial, Lucida Grande",
     h1: { color: "white" },

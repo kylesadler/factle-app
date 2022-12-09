@@ -35,7 +35,6 @@ router.post("/send-game-results", async (request, response) => {
       response.json({ error: true });
     } finally {
       // Ensures that the client will close when you finish/error
-      // await client.close();
       response.json({ success: true });
     }
   }
@@ -44,21 +43,6 @@ router.post("/send-game-results", async (request, response) => {
 //
 //  Database API
 //
-
-// TODO make this more secure
-const API_SECRET = "qtMui7mM85wiGfQvxcG8W9z9BB4sEy4FjBqxX";
-
-const authenticate = (request, response, next) => {
-  // check if user is authenticated
-
-  const { apiKey } = getBodyData(request);
-
-  if (apiKey && apiKey == API_SECRET) {
-    next();
-  } else {
-    response.status(400).json({ error: true });
-  }
-};
 
 const dateToCollection = (date) => {
   return dateStringToCollection(dateToMMDDYYYY(date));
@@ -87,8 +71,6 @@ const getPipelineResults = async (collection, pipeline) => {
   for await (const doc of pointer) {
     result.push(doc);
   }
-
-  console.log(`received ${result.length} results`);
 
   return result;
 };
@@ -161,7 +143,6 @@ const getGameStats = async (collection) => {
   return {
     totalGames,
     wonGames,
-    // prettier-ignore
     rowResults: filterPrefix(result[0], "row"),
     boardResults: filterPrefix(result[0], "board"),
     optionResults: filterPrefix(result[0], "option"),
@@ -175,7 +156,6 @@ const filterPrefix = (object, prefix) => {
       return x.startsWith(prefix);
     })
     .forEach((key) => {
-      // console.log(key, prefix, key.slice(prefix.length, key.length));
       output[key.slice(prefix.length, key.length)] = object[key];
     });
   return output;
@@ -186,7 +166,6 @@ const getGameStatsByDate = async (client, date) => {
   return getGameStats(collection);
 };
 
-// router.get("/get-game-results", authenticate, async (request, response) => {
 router.get("/get-game-results", async (request, response) => {
   // there are always two active questions due to timezones
   // https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
@@ -244,7 +223,7 @@ const getRowPercentiles = async (collection) => {
 // { "MM/DD/YYYY": [] array length 6 }
 // percentiles[i] is percentile of ending game at row i
 // i = 5 is for losing the game
-var rowPercentiles = {};
+const rowPercentiles = {};
 
 const updateRowPercentiles = async (inputDate) => {
   const date = inputDate || getCentralTimeMMDDYYYY();
@@ -259,11 +238,6 @@ setInterval(updateRowPercentiles, PERCENTILE_UPDATE_MS);
 
 router.post("/get-row-precentiles", async (request, response) => {
   const { date } = getBodyData(request); // date is MM/DD/YYYY datestring
-
-  // for testing
-  // await new Promise((res) => {
-  //   setTimeout(res, 5000);
-  // });
 
   if (!rowPercentiles || !rowPercentiles[date]) {
     await updateRowPercentiles(date);
