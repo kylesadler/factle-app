@@ -14,7 +14,6 @@ const getBodyData = (request) => {
 };
 
 const getCollection = async (client, name) => {
-  // console.log("getting collection", name);
   const db = await client.db("prod");
   return db.collection(name);
 };
@@ -23,11 +22,8 @@ router.post("/send-game-results", async (request, response) => {
   const { board, date, row, win, options } = getBodyData(request);
 
   if ([board, date, row, win, options].every((x) => x != undefined)) {
-    // console.log("received game results");
-    // console.log(board, date, row, win, options);
     const client = await getClient();
     try {
-      // await client.connect();
       const collection = await getCollection(
         client,
         dateStringToCollection(date)
@@ -205,7 +201,6 @@ router.get("/get-game-results", async (request, response) => {
     const todayResults = await getGameStatsByDate(client, today);
     const tomorrowResults = await getGameStatsByDate(client, tommorow);
     const results = { todayResults, tomorrowResults };
-    // console.log("got results", results);
     response.json(results);
   } catch (error) {
     console.log(error);
