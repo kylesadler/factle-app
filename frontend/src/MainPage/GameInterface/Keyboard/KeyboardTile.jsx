@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import Tile from "../Tile";
+import React from "react";
 import Colors from "../../../Colors";
 import { Button, Typography, useMediaQuery } from "@mui/material";
 import { styled } from "@mui/material/styles";
@@ -18,13 +17,10 @@ export default ({ text = "", onClick, styles = {}, textStyle = {} }) => {
   );
   const longText = longestWordLength > 11 || text.length > 25;
 
-  // console.log("longText", text, longText);
-  // console.log("longestWordLength", text, text.split(" "), longestWordLength);
-
   const smallScreen = useMediaQuery("(max-width:522px)");
 
-  var fontSize;
-  var padding;
+  let fontSize;
+  let padding;
   if (longText) {
     if (smallScreen) {
       fontSize = "11px";
@@ -66,11 +62,7 @@ export default ({ text = "", onClick, styles = {}, textStyle = {} }) => {
           justifyContent: "center",
           alignItems: "center",
           boxSizing: "border-box",
-
-          // add padding here
           borderRadius: 4,
-          // backgroundColor: Colors.LIGHT_GRAY,
-
           padding,
           ...styles,
         }}
@@ -80,7 +72,6 @@ export default ({ text = "", onClick, styles = {}, textStyle = {} }) => {
         <Typography
           style={{
             textAlign: "center",
-            // width: "90%",
             color: Colors.WHITE,
             fontWeight: 600,
             fontSize,

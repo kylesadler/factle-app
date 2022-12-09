@@ -35,14 +35,9 @@ statusToColor[BOARD_TILE_STATUSES.CORRECT] = Colors.GREEN;
 statusToColor[BOARD_TILE_STATUSES.PRESENT] = Colors.YELLOW;
 statusToColor[BOARD_TILE_STATUSES.NOT_PRESENT] = Colors.DARK_GRAY;
 export default observer(({ game, facts = [] }) => {
-  // console.log("board", game.board);
-  // console.log("row, col", game.row, game.col);
-  // console.log("solution", game.solution);
   const longestSolution = Math.max(
     ...(game?.solution || []).map(({ text }) => (text + "").length)
   );
-
-  // console.log("longestSolution", longestSolution);
 
   return (
     <div>

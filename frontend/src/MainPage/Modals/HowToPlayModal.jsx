@@ -40,11 +40,11 @@ export default ({ open, onClose }) => {
         <div style={{ padding: "5px 0px" }}>
           <BoardTileRow>
             <BoardTile
-              text={1}
+              text={"1"}
               color={Colors.GREEN}
               borderColor={Colors.WHITE}
             />
-            {[19, 7, 6, 20].map((n) => {
+            {["19", "7", "6", "20"].map((n) => {
               return <BoardTile text={n} borderColor={Colors.WHITE} />;
             })}
           </BoardTileRow>
@@ -54,13 +54,13 @@ export default ({ open, onClose }) => {
         </Typography>
         <div style={{ padding: "5px 0px" }}>
           <BoardTileRow>
-            <BoardTile text={21} borderColor={Colors.WHITE} />
+            <BoardTile text={"21"} borderColor={Colors.WHITE} />
             <BoardTile
-              text={4}
+              text={"4"}
               color={Colors.YELLOW}
               borderColor={Colors.WHITE}
             />
-            {[12, 8, 26].map((n) => {
+            {["12", "8", "26"].map((n) => {
               return <BoardTile text={n} borderColor={Colors.WHITE} />;
             })}
           </BoardTileRow>

@@ -1,20 +1,12 @@
 const express = require("express");
 const compression = require("compression");
-// const cors = require("cors");
 const app = express();
 const server = require("http").createServer(app);
 const port = 8080;
 const { initDatabase } = require("./backend/database");
 const fs = require("fs");
 
-initDatabase({
-  // host: "96.30.198.238",
-  host: "155.138.226.124",
-  username: "mongotunnel",
-  // privateKey: fs.readFileSync("/Users/kyle/.ssh/id_rsa"),
-  privateKey: fs.readFileSync("./ssh/id_rsa"),
-});
-// app.use(cors({ origin: "*" }));
+initDatabase({});
 
 app.use(compression());
 app.use(express.json());
@@ -29,6 +21,6 @@ app.get("*", (req, res) => {
   res.sendFile(`${staticDir}/index.html`);
 });
 
-var listener = server.listen(port, () => {
+const listener = server.listen(port, () => {
   console.log("Server started at port: " + listener.address().port);
 });

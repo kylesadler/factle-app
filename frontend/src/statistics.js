@@ -1,5 +1,5 @@
 exports.getStatistics = () => {
-  var localStorage;
+  let localStorage;
   try {
     localStorage = window.localStorage;
   } catch (e) {
@@ -16,7 +16,7 @@ exports.getStatistics = () => {
 };
 
 exports.setStatistics = (object) => {
-  var localStorage;
+  let localStorage;
   try {
     localStorage = window.localStorage;
   } catch (e) {

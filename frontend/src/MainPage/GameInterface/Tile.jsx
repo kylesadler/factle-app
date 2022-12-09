@@ -18,12 +18,9 @@ export default ({
   );
   const longText = longestWordLength > 11 || text.length > 25;
 
-  // console.log("longText", text, longText);
-  // console.log("longestWordLength", text, text.split(" "), longestWordLength);
-
   const smallScreen = useMediaQuery("(max-width:522px)");
 
-  var fontSize;
+  let fontSize;
   if (longText) {
     if (smallScreen) {
       fontSize = "11px";
@@ -60,8 +57,6 @@ export default ({
           flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",
-
-          // add padding here
           padding: 1,
           ...(tileStyle || {}),
         }}
@@ -71,7 +66,6 @@ export default ({
         <Typography
           style={{
             textAlign: "center",
-            // width: "90%",
             lineHeight: 1,
             color: Colors.WHITE,
             fontSize,
@@ -87,12 +81,10 @@ export default ({
           <Typography
             style={{
               textAlign: "center",
-              // width: "90%",
               lineHeight: 1,
               color: Colors.WHITE,
               fontSize: "12px",
               fontWeight: 600,
-              // ...(textStyle || {}),
             }}
             variant="body1"
           >

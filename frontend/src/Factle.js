@@ -99,7 +99,7 @@ class Factle {
     this.row = 0;
     this.col = 0;
     this.status =
-      this.isLoaded == false ? GAME_STATUS.LOADING : GAME_STATUS.IN_PROGRESS;
+      this.isLoaded === false ? GAME_STATUS.LOADING : GAME_STATUS.IN_PROGRESS;
 
     this.onComplete = onComplete; // ({ win: bool }) => {}
     this.onPercentileLoaded = onPercentileLoaded; // () => {}
@@ -110,7 +110,6 @@ class Factle {
     if (lastGameDate == today.toDateString()) {
       if (lastGame) this.board = lastGame;
       if (row) this.row = row;
-      //   console.log("setting board", typeof this.board);
       this.status = wonLastGame ? GAME_STATUS.WON : GAME_STATUS.LOST;
     }
 
@@ -118,7 +117,6 @@ class Factle {
   }
 
   onSelect = (option) => {
-    // console.log("selected", option);
     if (this.status != GAME_STATUS.IN_PROGRESS) return;
     const alreadySelected = this.board[this.row].some(({ id }) => {
       return id == option.id;
@@ -131,7 +129,6 @@ class Factle {
   };
 
   onBackspace = () => {
-    // console.log("backspace");
     if (this.col > 0) {
       this.col--;
       this.board[this.row][this.col] = {};
@@ -139,8 +136,6 @@ class Factle {
   };
 
   onEnter = async () => {
-    // console.log("enter");
-
     if (this.status != GAME_STATUS.IN_PROGRESS) return;
 
     const currentRow = `#root > div:first-child > div:nth-child(2) > div:nth-child(2) > div:nth-child(${
@@ -177,12 +172,6 @@ class Factle {
         this.keyboardColors[id] = Colors.GRAY;
       }
 
-      // await animateCSS(
-      //   `${currentRow} > div:nth-child(${i + 1})`,
-      //   "flipInX",
-      //   "0.6s"
-      // );
-
       delete this.board[this.row][i].isActive;
     }
 
@@ -197,14 +186,12 @@ class Factle {
       stats.currentStreak = stats.currentStreak ? stats.currentStreak : 0;
 
       if (numCorrect == 5) {
-        // console.log("win!");
         this.status = GAME_STATUS.WON;
         stats.wonGames++;
         stats.currentStreak++;
         stats.wonLastGame = true;
       } else {
         // last row
-        // console.log("game is over");
         this.status = GAME_STATUS.LOST;
         stats.wonLastGame = false;
       }
@@ -243,10 +230,8 @@ class Factle {
     // i = 5 is for losing the game
     const percentiles = await getRowPercentiles({ date: this.date });
     stats.rowPercentile = percentiles[row];
-    // console.log("percentiles", percentiles);
-    // console.log("setting row percentile", stats.rowPercentile);
     setStatistics(stats);
-    this.onPercentileLoaded ? this.onPercentileLoaded(stats) : "";
+    if (this.onPercentileLoaded) this.onPercentileLoaded(stats);
   };
 
   getGuessedOptions = () => {

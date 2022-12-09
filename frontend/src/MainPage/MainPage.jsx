@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { observer } from "mobx-react-lite";
 import Header from "./Header";
 import GameInterface from "./GameInterface/GameInterface";
@@ -43,11 +43,9 @@ export default observer(
         <Header
           onHelpClick={() => {
             setHelpOpen(true);
-            // console.log("opening help");
           }}
           onStatsClick={() => {
             setStatsOpen(true);
-            // console.log("opening stats");
           }}
           bannerText={bannerText}
         />
@@ -62,7 +60,6 @@ export default observer(
         <HowToPlayModal
           open={helpOpen}
           onClose={() => {
-            // console.log("closing help");
             setHelpOpen(false);
           }}
         />
@@ -71,7 +68,6 @@ export default observer(
           prompt={prompt}
           open={statsOpen}
           onClose={() => {
-            // console.log("closing stats");
             setStatsOpen(false);
           }}
           statisticsPageText={statisticsPageText}
@@ -80,7 +76,6 @@ export default observer(
         <CustomModal
           open={customOpen}
           onClose={() => {
-            // console.log("closing stats");
             setCustomOpen(false);
           }}
           popup={popup || {}}

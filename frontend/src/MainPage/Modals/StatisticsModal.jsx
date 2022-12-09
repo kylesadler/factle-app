@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useRef } from "react";
 import Modal from "./Modal/Modal";
 import { GAME_STATUS, BOARD_TILE_STATUSES } from "../../Factle";
 import { getStatistics } from "../../statistics";
@@ -7,7 +7,7 @@ import CampaignOutlinedIcon from "@mui/icons-material/CampaignOutlined";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import { observer } from "mobx-react-lite";
-import { Button, Divider } from "@mui/material";
+import { Button } from "@mui/material";
 import Colors from "../../Colors";
 import {
   getTimeToMidnight,
@@ -132,14 +132,6 @@ const StatBlock = ({ label, value }) => {
 };
 
 const WinningStats = ({ wonGames, totalGames, currentStreak }) => {
-  // return (
-  //   <CenteredText>
-  //     {`You've won ${wonGames} out of ${totalGames}. That's ${formatPercent(
-  //       wonGames / totalGames
-  //     )}.`}
-  //   </CenteredText>
-  // );
-
   return (
     <div
       style={{
@@ -165,10 +157,6 @@ const EmojiCard = ({ game, prompt, rowPercentile, win }) => {
     prompt,
     rowPercentile,
   });
-
-  // console.log("rowPercentile", rowPercentile);
-  // console.log("percentileText", percentileText);
-  // console.log("win", win);
 
   const percentile = win && percentileText ? percentileText : "";
 
@@ -270,7 +258,6 @@ const ButtonSection = ({ onClose, instagamLink }) => {
   const wideScreen = useMediaQuery("(min-width:440px)");
 
   return (
-    // <React.Fragment>
     <Centered>
       {/* updates, follow us */}
       {/* <CenteredText>Follow us on</CenteredText> */}
@@ -284,15 +271,6 @@ const ButtonSection = ({ onClose, instagamLink }) => {
           alignItems: "center",
         }}
       >
-        {/* <Button
-          variant="contained"
-          style={{ backgroundColor: Colors.TWITTER_COLOR }}
-          onClick={() => {
-            window.open("https://twitter.com/pipedream_labs");
-          }}
-        >
-          Twitter
-        </Button>*/}
         <SeeAnswerButton link={instagamLink} />
         <div style={{ width: 10, height: 10 }}></div>
         <FeedbackButton />
@@ -349,7 +327,6 @@ export default observer(
     const wideScreen = useMediaQuery("(min-width:640px)");
 
     // force state to update when Factle loads rowPercentile
-    // TODO this is hacky
     const [p, setP] = useState(undefined);
     game.onPercentileLoaded = ({ rowPercentile }) => {
       setP(p + 1);
@@ -357,12 +334,8 @@ export default observer(
 
     const timeDifference = getTimeToMidnight();
 
-    // TODO this won't update
     const { wonGames, totalGames, currentStreak, rowPercentile } =
       getStatistics();
-
-    // console.log("wonGames", "totalGames", "currentStreak", "rowPercentile");
-    // console.log(wonGames, totalGames, currentStreak, rowPercentile);
 
     return (
       <Modal open={open} onClose={onClose}>
